@@ -31,10 +31,12 @@ Button::Button(int width, int height, Sprite sprite)
 {
 	this->width = width;
 	this->height = height;
-	this->activeSprite = sprite;
 	this->idleSprite = sprite; //if there is no need for additional sprites
+	this->activeSprite = this->idleSprite;
 
-	GraphMethods::ScaleSprite(this->activeSprite, this->width, this->height);
+	GraphMethods::ScaleSprite(this->activeSprite, this->width, this->height); // we need to scale sprite in order to fill up button 
+	GraphMethods::ScaleSprite(this->idleSprite, this->width, this->height);
+	GraphMethods::ScaleSprite(this->hoveredSprite, this->width, this->height);
 	
 }
 

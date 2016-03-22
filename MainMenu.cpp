@@ -10,8 +10,8 @@ using namespace sf;
 MainMenu::MainMenu()
 {
 	
-	resolutionX = 800;
-	resolutionY = 600; // narazie na sztywno. Potrzeba menu do wyboru
+	resolutionX = 1200;
+	resolutionY = 800; // narazie na sztywno. Potrzeba menu do wyboru
 
 	menuWindow = new RenderWindow(VideoMode(resolutionX, resolutionY, 32), "SebaCraft");
 
@@ -26,11 +26,10 @@ MainMenu::MainMenu()
 	hoveredStartSprite.setTexture(hoveredStartTexture);
 	pressedStartSprite.setTexture(pressedStartTexture);
 
-	Button bStart(100, 60, idleStartSprite);
+	Button bStart(200, 160, idleStartSprite);
 	bStart.setAdditionalSprites(idleStartSprite, hoveredStartSprite, pressedStartSprite); // we want to use additional Sprites for buttons
-	bStart.setPosition(300, 300);
+	bStart.setPosition((resolutionX/2 - bStart.getWidth()/2), (resolutionY/2 - bStart.getHeight()/2));
 
-	bStart.activateHoveredSprite();
 
 	backgroundTexture.loadFromFile("Graphs\\MenuBackground.jpg");
 	
