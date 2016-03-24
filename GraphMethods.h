@@ -4,5 +4,5 @@
 static class GraphMethods
 {
 public:
-	static void ScaleSprite(sf::Sprite& yourSprite, double targetX, double targetY);
+	static void ScaleSprite(sf::Sprite & yourSprite, double targetX, double targetY);
 };

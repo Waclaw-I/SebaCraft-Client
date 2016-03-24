@@ -8,7 +8,7 @@ private:
 	int resolutionY;
 	bool Fullscreen;
 	sf::Texture backgroundTexture;
-	sf::Sprite backgroundSprite;
+	sf::Sprite  backgroundSprite;
 	sf::RenderWindow * menuWindow;
 
 public:

@@ -1,8 +1,9 @@
 /Debug
 /Release
 
+
 openal32.dll
 sfml*
 
-SebaCraft Clien.vcxproj
-SebaCraft Clien.vcxproj.filters
+SebaCraft-Client.vcxproj
+SebaCraft-Client.vcxproj.filters

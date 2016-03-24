@@ -27,19 +27,23 @@ private:
 public:
 
 	Button(string text, int width, int height, Color col, int fontSize); // use Text to create button
-	Button(int width, int height, Sprite sprite); // create button using graphic
+	Button(int width, int height,Texture & idle, Texture & hovered, Texture & pressed); // create button using graphic
 
 	int getWidth(); // get width of the button
 	int getHeight(); // get height of the button
+	int getPositionX();
+	int getPositionY();
 	void setWidth(int width); // set width of the button
 	void setHeight(int height); // set height of the button
 	void setPosition(int positionX, int positionY); // set global position of the button
 
-	Sprite getSprite(); // get actual Sprite of the button (if is avaiable)
+	Sprite & getSprite(); // get actual Sprite of the button (if is avaiable)
 
-	void setAdditionalSprites(Sprite idle, Sprite hovered, Sprite pressed); // set sprites foridle, hovered and pressed stances of the button
 
 	void activateIdleSprite(); // we can decide, which sprite is currently active
 	void activateHoveredSprite();
 	void activatePressedSprite();
+
+	bool isMouseOver(Window & window);
+	bool isButtonPressed(Window & window);
 };

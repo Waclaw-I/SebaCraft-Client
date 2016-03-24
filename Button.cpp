@@ -3,6 +3,8 @@
 
 int Button::getHeight() { return height; }
 int Button::getWidth() { return width; }
+int Button::getPositionX() { return positionX; }
+int Button::getPositionY() { return positionY; }
 void Button::setHeight(int height) { this->height = height; }
 void Button::setWidth(int width) { this->width = width; }
 
@@ -27,12 +29,15 @@ Button::Button(string text, int width, int height, Color col, int fontSize)
 	this->text.setCharacterSize(fontSize);
 }
 
-Button::Button(int width, int height, Sprite sprite)
+Button::Button(int width, int height, Texture & idle, Texture & hovered, Texture & pressed)
 {
 	this->width = width;
 	this->height = height;
-	this->idleSprite = sprite; //if there is no need for additional sprites
-	this->activeSprite = this->idleSprite;
+	this->idleSprite.setTexture(idle); //if there is no need for additional sprites
+	this->activeSprite = idleSprite;
+
+	this->hoveredSprite.setTexture(hovered);
+	this->pressedSprite.setTexture(pressed);
 
 	GraphMethods::ScaleSprite(this->activeSprite, this->width, this->height); // we need to scale sprite in order to fill up button 
 	GraphMethods::ScaleSprite(this->idleSprite, this->width, this->height);
@@ -40,19 +45,28 @@ Button::Button(int width, int height, Sprite sprite)
 	
 }
 
-Sprite Button::getSprite()
+Sprite & Button::getSprite()
 {
 	return this->activeSprite;
 }
 
-void Button::setAdditionalSprites(Sprite idle, Sprite hovered, Sprite pressed) // if none, idle sprite will also be the active
-{
-	this->idleSprite = idle;
-	this->hoveredSprite = hovered;
-	this->pressedSprite = pressed;
-}
 
 void Button::activateIdleSprite() { activeSprite = idleSprite; }
 void Button::activateHoveredSprite() { activeSprite = hoveredSprite; }
 void Button::activatePressedSprite() { activeSprite = pressedSprite; }
+
+bool Button::isMouseOver(Window & window)
+{
+	if (Mouse::getPosition(window).x > positionX && Mouse::getPosition(window).x < positionX + width)
+		if (Mouse::getPosition(window).y > positionY && Mouse::getPosition(window).y < positionY + height)
+			return true;
+		else return false;
+	else return false;
+}
+
+bool Button::isButtonPressed(Window & window)
+{
+	if (isMouseOver(window) && Mouse::isButtonPressed(Mouse::Left)) return true;
+	else return false;
+}
 
