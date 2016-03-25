@@ -70,3 +70,10 @@ bool Button::isButtonPressed(Window & window)
 	else return false;
 }
 
+void Button::changeVisibleSprite(Window & window)
+{
+	if (isMouseOver(window)) activateHoveredSprite();
+	else activateIdleSprite();
+	if (isButtonPressed(window)) activatePressedSprite();
+}
+

@@ -19,4 +19,12 @@ void TextureHolder::initializeTextureArrays()
 	menuButtonTextures[4].loadFromFile("Graphs/Menu/bHoveredRegister.png");
 	menuButtonTextures[5].loadFromFile("Graphs/Menu/bPressedRegister.png");
 
+	menuButtonTextures[6].loadFromFile("Graphs/Menu/bIdleResolution.png");
+	menuButtonTextures[7].loadFromFile("Graphs/Menu/bHoveredResolution.png");
+	menuButtonTextures[8].loadFromFile("Graphs/Menu/bPressedResolution.png");
+
+	menuButtonTextures[9].loadFromFile("Graphs/Menu/bIdleExit.png");
+	menuButtonTextures[10].loadFromFile("Graphs/Menu/bHoveredExit.png");
+	menuButtonTextures[11].loadFromFile("Graphs/Menu/bPressedExit.png");
+
 }

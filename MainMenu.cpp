@@ -19,9 +19,15 @@ MainMenu::MainMenu()
 
 	menuWindow = new RenderWindow(VideoMode(resolutionX, resolutionY, 32), "SebaCraft");
 
-	Button bStart(100, 60, TextureHolder::getMenuButtonTexture(0), TextureHolder::getMenuButtonTexture(1), TextureHolder::getMenuButtonTexture(2));
+	Button bLogin(100, 60, TextureHolder::getMenuButtonTexture(0), TextureHolder::getMenuButtonTexture(1), TextureHolder::getMenuButtonTexture(2));
+	Button bRegister(100, 60, TextureHolder::getMenuButtonTexture(3), TextureHolder::getMenuButtonTexture(4), TextureHolder::getMenuButtonTexture(5));
+	Button bResolution(100, 60, TextureHolder::getMenuButtonTexture(6), TextureHolder::getMenuButtonTexture(7), TextureHolder::getMenuButtonTexture(8));
+	Button bExit(100, 60, TextureHolder::getMenuButtonTexture(9), TextureHolder::getMenuButtonTexture(10), TextureHolder::getMenuButtonTexture(11));
 	
-	bStart.setPosition((resolutionX/2 - bStart.getWidth()/2), (resolutionY/2 - bStart.getHeight()/2 - 200));
+	bLogin.setPosition((resolutionX/2 - bLogin.getWidth()/2), (resolutionY/2 - bLogin.getHeight()/2 - 200));
+	bRegister.setPosition((resolutionX / 2 - bRegister.getWidth() / 2), (resolutionY / 2 - bRegister.getHeight() / 2 - 100));
+	bResolution.setPosition((resolutionX / 2 - bRegister.getWidth() / 2), (resolutionY / 2 - bRegister.getHeight() / 2));
+	bExit.setPosition((resolutionX / 2 - bRegister.getWidth() / 2), (resolutionY / 2 - bRegister.getHeight() / 2 + 100));
 
 	
 	
@@ -41,13 +47,17 @@ MainMenu::MainMenu()
 			if (event.type == Event::Closed) menuWindow->close();
 		}
 
-		if (bStart.isMouseOver(*menuWindow)) bStart.activateHoveredSprite();
-		else bStart.activateIdleSprite();
-		if (bStart.isButtonPressed(*menuWindow)) bStart.activatePressedSprite();
+		bLogin.changeVisibleSprite(*menuWindow);
+		bRegister.changeVisibleSprite(*menuWindow);
+		bResolution.changeVisibleSprite(*menuWindow);
+		bExit.changeVisibleSprite(*menuWindow);
 
 		menuWindow->clear(Color::Cyan);
 		menuWindow->draw(backgroundSprite);
-		menuWindow->draw(bStart.getSprite());
+		menuWindow->draw(bLogin.getSprite());
+		menuWindow->draw(bRegister.getSprite());
+		menuWindow->draw(bResolution.getSprite());
+		menuWindow->draw(bExit.getSprite());
 		menuWindow->display();
 	}
 }

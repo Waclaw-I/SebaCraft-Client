@@ -6,7 +6,7 @@ using namespace sf;
 class TextureHolder
 {
 private:
-	static Texture menuButtonTextures[6];
+	static Texture menuButtonTextures[12];
 
 public:
 

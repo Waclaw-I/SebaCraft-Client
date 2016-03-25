@@ -46,4 +46,6 @@ public:
 
 	bool isMouseOver(Window & window);
 	bool isButtonPressed(Window & window);
+
+	void changeVisibleSprite(Window & window);
 };
