@@ -4,6 +4,7 @@
 #include "SFML\Graphics.hpp"
 
 #include "TextureHolder.h"
+#include "ResolutionWindow.h"
 
 #include <iostream>
 
@@ -51,6 +52,9 @@ MainMenu::MainMenu()
 		bRegister.changeVisibleSprite(*menuWindow);
 		bResolution.changeVisibleSprite(*menuWindow);
 		bExit.changeVisibleSprite(*menuWindow);
+
+		if (bResolution.isButtonPressed(*menuWindow)) ResolutionWindow * resolution = new ResolutionWindow();
+		if (bExit.isButtonPressed(*menuWindow)) menuWindow->close();
 
 		menuWindow->clear(Color::Cyan);
 		menuWindow->draw(backgroundSprite);
