@@ -54,11 +54,14 @@ MainMenu::MainMenu()
 		bResolution.changeVisibleSprite(*menuWindow);
 		bExit.changeVisibleSprite(*menuWindow);
 
+		if (bLogin.isButtonPressed(*menuWindow))
+		{
+			GameLogic::setGameStarted(true);
+			menuWindow->close();
+		}
 		if (bResolution.isButtonPressed(*menuWindow)) ResolutionWindow * resolution = new ResolutionWindow();
 		if (bExit.isButtonPressed(*menuWindow)) menuWindow->close();
 
-		cout << GameLogic::getResolutionX() << endl;
-		cout << GameLogic::getResolutionY() << endl;
 
 		menuWindow->clear(Color::Cyan);
 		menuWindow->draw(backgroundSprite);
