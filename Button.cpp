@@ -31,6 +31,9 @@ Button::Button(string text, int width, int height, Color col, int fontSize)
 
 Button::Button(int width, int height, Texture & idle, Texture & hovered, Texture & pressed)
 {
+
+	this->selected = false;
+
 	this->width = width;
 	this->height = height;
 	this->idleSprite.setTexture(idle); //if there is no need for additional sprites
@@ -45,10 +48,14 @@ Button::Button(int width, int height, Texture & idle, Texture & hovered, Texture
 	
 }
 
-Sprite & Button::getSprite()
-{
-	return this->activeSprite;
-}
+Sprite & Button::getSprite() {return this->activeSprite;}
+Sprite & Button::getIdleSprite() { return this->idleSprite; }
+Sprite & Button::getHoveredSprite() { return this->hoveredSprite; }
+Sprite & Button::getPressedSprite() { return this->pressedSprite; }
+
+bool Button::isButtonSelected() { return selected; }
+void Button::setAsSelected() { this->selected = true; }
+void Button::setAsUnselected() { this->selected = false; }
 
 
 void Button::activateIdleSprite() { activeSprite = idleSprite; }
@@ -68,12 +75,17 @@ bool Button::isButtonPressed(Window & window)
 {
 	if (isMouseOver(window) && Mouse::isButtonPressed(Mouse::Left)) return true;
 	else return false;
+
 }
 
 void Button::changeVisibleSprite(Window & window)
 {
 	if (isMouseOver(window)) activateHoveredSprite();
 	else activateIdleSprite();
-	if (isButtonPressed(window)) activatePressedSprite();
+	if (isButtonPressed(window))
+	{
+		activatePressedSprite();
+		setAsSelected();
+	}
 }
 

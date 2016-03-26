@@ -15,6 +15,8 @@ private:
 	int positionX;
 	int positionY;
 
+	bool selected;
+
 	Text text;
 
 	Sprite activeSprite; // currently active sprite
@@ -38,6 +40,9 @@ public:
 	void setPosition(int positionX, int positionY); // set global position of the button
 
 	Sprite & getSprite(); // get actual Sprite of the button (if is avaiable)
+	Sprite & getIdleSprite();
+	Sprite & getHoveredSprite();
+	Sprite & getPressedSprite();
 
 
 	void activateIdleSprite(); // we can decide, which sprite is currently active
@@ -46,6 +51,10 @@ public:
 
 	bool isMouseOver(Window & window);
 	bool isButtonPressed(Window & window);
+
+	bool isButtonSelected();
+	void setAsSelected();
+	void setAsUnselected();
 
 	void changeVisibleSprite(Window & window);
 };

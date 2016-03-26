@@ -2,6 +2,7 @@
 #include "Button.h"
 #include "GraphMethods.h"
 #include "SFML\Graphics.hpp"
+#include "GameLogic.h"
 
 #include "TextureHolder.h"
 #include "ResolutionWindow.h"
@@ -56,6 +57,9 @@ MainMenu::MainMenu()
 		if (bResolution.isButtonPressed(*menuWindow)) ResolutionWindow * resolution = new ResolutionWindow();
 		if (bExit.isButtonPressed(*menuWindow)) menuWindow->close();
 
+		cout << GameLogic::getResolutionX() << endl;
+		cout << GameLogic::getResolutionY() << endl;
+
 		menuWindow->clear(Color::Cyan);
 		menuWindow->draw(backgroundSprite);
 		menuWindow->draw(bLogin.getSprite());
@@ -63,5 +67,7 @@ MainMenu::MainMenu()
 		menuWindow->draw(bResolution.getSprite());
 		menuWindow->draw(bExit.getSprite());
 		menuWindow->display();
+
+		
 	}
 }
