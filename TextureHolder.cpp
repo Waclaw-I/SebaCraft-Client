@@ -4,6 +4,7 @@ using namespace sf;
 
 Texture TextureHolder::menuButtonTextures[];
 Texture TextureHolder::resolutionButtonTextures[];
+Texture TextureHolder::shipsTextures[];
 
 Texture & TextureHolder::getMenuButtonTexture(int index)
 {
@@ -13,6 +14,11 @@ Texture & TextureHolder::getMenuButtonTexture(int index)
 Texture & TextureHolder::getResolutionButtonTexture(int index)
 {
 	return resolutionButtonTextures[index];
+}
+
+Texture & TextureHolder::getShipsTextures(int index)
+{
+	return shipsTextures[index];
 }
 
 void TextureHolder::initializeTextureArrays()
@@ -45,5 +51,7 @@ void TextureHolder::initializeTextureArrays()
 	resolutionButtonTextures[12].loadFromFile("Graphs/Menu/Resolution/bIdleOk.png");
 	resolutionButtonTextures[13].loadFromFile("Graphs/Menu/Resolution/bHoveredOk.png");
 	resolutionButtonTextures[14].loadFromFile("Graphs/Menu/Resolution/bPressedOk.png");
+
+	shipsTextures[0].loadFromFile("Graphs/Game/smallFighter.png");
 
 }
