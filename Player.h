@@ -12,8 +12,6 @@ private:
 	string playerName;
 
 	//LOGIC OF THE PLAYER SHIP
-	int sizeX;
-	int sizeY;
 
 	double actualHealth; // actual health
 	double actualSpeedX;
@@ -25,10 +23,6 @@ private:
 
 	int maxHealth;		// maximal amount at the moment. You can raise it by upgrades
 	double maxSpeed; // we are in space though :P
-
-	double x; // position and rotation
-	double y;
-	double rotation;
 	// =======================
 
 public:
@@ -45,12 +39,6 @@ public:
 	void looseHealth(int);		// Substracting values from the variables
 	void looseAcceleration(double);
 	
-
-	double getPositionX();				// methods for returning position to Displayer class
-	double getPositionY();
-	int getSizeX();
-	int getSizeY();
-	double getRotation();
 	double getRotationInRadians();
 	double getRotationSpeed();
 	double getActualSpeedX();

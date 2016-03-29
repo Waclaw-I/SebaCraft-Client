@@ -39,15 +39,17 @@ Game::Game(ClientData & myClient)
 	GUIpanel mainPanel;
 	Player player("Waclaw");
 
-	View playerCamera;
-	playerCamera = gameWindow->getDefaultView();
-	playerCamera.setViewport(FloatRect(0, 0, 1, 1));
+	
 
 
 	if (resolutionX == VideoMode::getDesktopMode().width && resolutionY == VideoMode::getDesktopMode().height)
 		gameWindow = new RenderWindow(VideoMode(100, 100, 32), "SebaCraft", Style::Fullscreen);
 
 	else gameWindow = new RenderWindow(VideoMode(resolutionX, resolutionY, 32), "SebaCraft");
+
+	View playerCamera;
+	playerCamera = gameWindow->getDefaultView();
+	playerCamera.setViewport(FloatRect(0, 0, 1, 1));
 
 	backgroundTexture.loadFromFile("Graphs/Game/gameBackground.png");
 
@@ -72,7 +74,9 @@ Game::Game(ClientData & myClient)
 				if (event.key.code == Keyboard::Escape) gameWindow->close();
 			}
 
-			playerCamera.setCenter(player.getPositionX(), player.getPositionY());
+			playerCamera.setCenter(player.getGlobalPositionX(), player.getGlobalPositionY());
+			mainPanel.getGraph().setPosition(player.getGlobalPositionX() - resolutionX/2, player.getGlobalPositionY() - resolutionY/2);
+			gameWindow->setView(playerCamera);
 
 			PlayerController::Moving(&player);
 			DisplayController::UpdatePlayerGraph(&player);

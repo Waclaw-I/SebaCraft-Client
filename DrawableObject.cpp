@@ -1,21 +1,34 @@
 #include "DrawableObject.h"
 
 
-DrawableObject::DrawableObject(int windowX, int windowY, int globalX, int globalY, Texture & texture, int sizeX, int sizeY)
+DrawableObject::DrawableObject(double windowX, double windowY, double globalX, double globalY, Texture & texture, double sizeX, double sizeY, double rotation)
 {
-	this->windowPosition.setX(windowX);
-	this->windowPosition.setY(windowY);
-	this->globalPosition.setX(globalX);
-	this->globalPosition.setY(globalY);
+	this->windowPositionX = windowX;
+	this->windowPositionY = windowY;
+	this->globalPositionX = globalX;
+	this->globalPositionY = globalY;
 	this->graph.setTexture(texture);
 	this->sizeX = sizeX;
 	this->sizeY = sizeY;
+	this->rotation = rotation;
 }
 
-Point2D DrawableObject::getWindowPosition() { return this->windowPosition; }
-Point2D DrawableObject::getGlobalPosition() { return this->globalPosition; }
-Sprite & DrawableObject::getGraph() { return this->graph; }
+double DrawableObject::getWindowPositionX() { return this->windowPositionX; }
+double DrawableObject::getWindowPositionY() { return this->windowPositionY; }
+double DrawableObject::getGlobalPositionX() { return this->globalPositionX; }
+double DrawableObject::getGlobalPositionY() { return this->globalPositionY; }
 
-void DrawableObject::setWindowPosition(int x, int y) { windowPosition.setX(x); windowPosition.setY(y); }
-void DrawableObject::setGlobalPosition(int x, int y) { globalPosition.setX(x); globalPosition.setY(y); }
+Sprite & DrawableObject::getGraph() { return this->graph; }
+double DrawableObject::getSizeX() { return this->sizeX; }
+double DrawableObject::getSizeY() { return this->sizeY; }
+double DrawableObject::getRotation() { return this->rotation; }
+
+void DrawableObject::setWindowPositionX(double x) { this->windowPositionX = x; }
+void DrawableObject::setWindowPositionY(double y) { this->windowPositionX = y; }
+void DrawableObject::setGlobalPositionX(double x) { this->windowPositionX = x; }
+void DrawableObject::setGlobalPositionY(double y) { this->windowPositionX = y; }
+
 void DrawableObject::setGraph(Sprite graph) { this->graph = graph; }
+void DrawableObject::setSizeX(double x) { this->sizeX = x; }
+void DrawableObject::setSizeY(double y) { this->sizeY = y; }
+void DrawableObject::setRotation(double rotation) { this->rotation = rotation; }

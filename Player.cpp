@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Player::Player(string playerName) : DrawableObject(300, 300, 300, 300, TextureHolder::getShipsTextures(0), 62, 51)
+Player::Player(string playerName) : DrawableObject(300, 300, 300, 300, TextureHolder::getShipsTextures(0), 62, 51, 0)
 {
 	this->playerName = playerName;
 	this->actualHealth = 100;
@@ -13,24 +13,12 @@ Player::Player(string playerName) : DrawableObject(300, 300, 300, 300, TextureHo
 	this->maxHealth = 100;
 	this->maxSpeed = 2.5;
 	this->rotationSpeed = 2.5;
-	this->rotation = 0;
-	this->x = 300;
-	this->y = 300;
-	this->sizeX = 62;
-	this->sizeY = 51;
 	this->isAlive = true;
 
 	this->getGraph().setOrigin(this->sizeX / 2, this->sizeY / 2);
 }
 
 
-double Player::getPositionX() { return x; }
-double Player::getPositionY() { return y; }
-
-int Player::getSizeX() { return sizeX; }
-int Player::getSizeY() { return sizeY; }
-
-double Player::getRotation() { return rotation; }
 double Player::getRotationInRadians()
 {
 	return (rotation * (3.14 / 180));
@@ -124,6 +112,6 @@ void Player::rotateRight()
 
 void Player::move()
 {
-	x += actualSpeedX;
-	y += actualSpeedY;
+	globalPositionX += actualSpeedX;
+	globalPositionY += actualSpeedY;
 }

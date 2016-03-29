@@ -14,8 +14,8 @@ void DisplayController::InsertNewDrawableObject(DrawableObject * object)
 
 void DisplayController::UpdatePlayerGraph(Player * player)
 {
-	double playerX = player->getPositionX();
-	double playerY = player->getPositionY();
+	double playerX = player->getGlobalPositionX();
+	double playerY = player->getGlobalPositionY();
 	double playerRotation = player->getRotation();
 
 	player->getGraph().setPosition(playerX, playerY);

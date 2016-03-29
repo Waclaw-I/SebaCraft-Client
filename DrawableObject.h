@@ -1,28 +1,42 @@
 #pragma once
 
 #include "SFML\Graphics.hpp"
-#include "Point2D.h"
 
 using namespace sf;
 
 class DrawableObject
 {
 protected:
-	Point2D windowPosition;
-	Point2D globalPosition;
-	int sizeX;
-	int sizeY;
+	double windowPositionX;
+	double windowPositionY;
+	double globalPositionX;
+	double globalPositionY;
+	double sizeX;
+	double sizeY;
+	double rotation;
 	Sprite graph;
 
 public:
 
-	DrawableObject(int windowX, int windowY, int globalX, int globalY, Texture & texture, int sizeX, int sizeY);
+	DrawableObject(double windowX, double windowY, double globalX, double globalY, Texture & texture, double sizeX, double sizeY, double rotation);
 
-	Point2D getWindowPosition();
-	Point2D getGlobalPosition();
+	double getWindowPositionX();
+	double getWindowPositionY();
+	double getGlobalPositionX();
+	double getGlobalPositionY();
+
 	Sprite & getGraph();
+	double getSizeX();
+	double getSizeY();
+	double getRotation();
 
-	void setWindowPosition(int x, int y);
-	void setGlobalPosition(int x, int y);
+	void setWindowPositionX(double x);
+	void setWindowPositionY(double y);
+	void setGlobalPositionX(double x);
+	void setGlobalPositionY(double y);
+
 	void setGraph(Sprite graph);
+	void setSizeX(double x);
+	void setSizeY(double y);
+	void setRotation(double rotation);
 };
