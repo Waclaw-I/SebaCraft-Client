@@ -9,6 +9,7 @@ private:
 	static Texture menuButtonTextures[12];
 	static Texture resolutionButtonTextures[15];
 	static Texture shipsTextures[1];
+	static Texture GUItextures[1];
 
 public:
 
@@ -16,4 +17,5 @@ public:
 	static Texture & getMenuButtonTexture(int index);
 	static Texture & getResolutionButtonTexture(int index);
 	static Texture & getShipsTextures(int index);
+	static Texture & getGUItextures(int index);
 };

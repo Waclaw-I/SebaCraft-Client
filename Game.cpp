@@ -3,8 +3,12 @@
 #include "GraphMethods.h"
 #include "Button.h"
 #include "TextureHolder.h"
-#include <thread>
+#include "GUIpanel.h"
+#include "Player.h"
+#include "PlayerController.h"
+#include "DisplayController.h"
 
+#include <thread>
 #include "SFML\Graphics.hpp"
 
 #include <iostream>
@@ -32,8 +36,13 @@ Game::Game(ClientData & myClient)
 	scaleFactorX = static_cast<double>(resolutionX) / static_cast<double>(VideoMode::getDesktopMode().width);
 	scaleFactorY = static_cast<double>(resolutionY) / static_cast<double>(VideoMode::getDesktopMode().height);
 
-	std::cout << scaleFactorX << endl;
-	std::cout << scaleFactorY << endl;
+	GUIpanel mainPanel;
+	Player player("Waclaw");
+
+	View playerCamera;
+	playerCamera = gameWindow->getDefaultView();
+	playerCamera.setViewport(FloatRect(0, 0, 1, 1));
+
 
 	if (resolutionX == VideoMode::getDesktopMode().width && resolutionY == VideoMode::getDesktopMode().height)
 		gameWindow = new RenderWindow(VideoMode(100, 100, 32), "SebaCraft", Style::Fullscreen);
@@ -45,25 +54,38 @@ Game::Game(ClientData & myClient)
 	backgroundSprite.setTexture(backgroundTexture);
 	GraphMethods::ScaleSprite(backgroundSprite, resolutionX, resolutionY);
 
-	Button bTemp(100 * scaleFactorX, 60 * scaleFactorY, TextureHolder::getShipsTextures(0), TextureHolder::getShipsTextures(0), TextureHolder::getShipsTextures(0));
-	bTemp.setPosition((resolutionX / 2 - bTemp.getWidth() / 2), (resolutionY / 2 - bTemp.getHeight() / 2 ));
+	Clock timer;
+	float accumulator = 0;
+	float timeStep = 0.0166f; // 60FPS
 
 	while (gameWindow->isOpen())
 	{
-		Event event;
+		accumulator += timer.restart().asSeconds();
 
-		while (gameWindow->pollEvent(event))
+		if (accumulator >= timeStep) // timer
 		{
-			if (event.type == Event::Closed) gameWindow->close();
-			if (event.key.code == Keyboard::Escape) gameWindow->close();
+			Event event;
+
+			while (gameWindow->pollEvent(event))
+			{
+				if (event.type == Event::Closed) gameWindow->close();
+				if (event.key.code == Keyboard::Escape) gameWindow->close();
+			}
+
+			playerCamera.setCenter(player.getPositionX(), player.getPositionY());
+
+			PlayerController::Moving(&player);
+			DisplayController::UpdatePlayerGraph(&player);
+
+			gameWindow->clear(Color::Black);
+			gameWindow->draw(backgroundSprite);
+			gameWindow->draw(mainPanel.getGraph());
+			gameWindow->draw(player.getGraph());
+
+			gameWindow->display();
+
+			accumulator -= timeStep;
 		}
-
 		
-
-		gameWindow->clear(Color::Black);
-		gameWindow->draw(backgroundSprite);
-		gameWindow->draw(bTemp.getSprite());
-
-		gameWindow->display();
 	}
 }
