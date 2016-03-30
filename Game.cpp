@@ -18,7 +18,7 @@ using namespace sf;
 void ThreadProc(ClientData & myClient)
 {
 	string message; // for chat
-	while (true)
+	while (GameLogic::getGameOn())
 	{
 		// CHAT FUNCTION (CONSOLE FOR NOW)
 		getline(cin, message);
@@ -28,6 +28,7 @@ void ThreadProc(ClientData & myClient)
 
 Game::Game(ClientData & myClient)
 {
+	GameLogic::setGameOn(true);
 	thread t1(ThreadProc, myClient);
 
 	resolutionX = GameLogic::getResolutionX();
@@ -55,6 +56,7 @@ Game::Game(ClientData & myClient)
 
 	backgroundSprite.setTexture(backgroundTexture);
 	GraphMethods::ScaleSprite(backgroundSprite, resolutionX, resolutionY);
+	GraphMethods::ScaleToResolution(mainPanel.getGraph(), 800, 600, resolutionX, resolutionY);
 
 	Clock timer;
 	float accumulator = 0;
@@ -70,8 +72,16 @@ Game::Game(ClientData & myClient)
 
 			while (gameWindow->pollEvent(event))
 			{
-				if (event.type == Event::Closed) gameWindow->close();
-				if (event.key.code == Keyboard::Escape) gameWindow->close();
+				if (event.type == Event::Closed)
+				{
+					GameLogic::setGameOn(false);
+					gameWindow->close();
+				}
+				if (event.key.code == Keyboard::Escape)
+				{
+					gameWindow->close();
+					GameLogic::setGameOn(false);
+				}
 			}
 
 			playerCamera.setCenter(player.getGlobalPositionX(), player.getGlobalPositionY());
