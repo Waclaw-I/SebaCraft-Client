@@ -3,7 +3,8 @@
 
 #include <iostream>
 
-Player::Player(string playerName) : DrawableObject(300, 300, 300, 300, TextureHolder::getShipsTextures(0), 62, 51, 0)
+Player::Player(string playerName, Texture & texture, double posX, double posY, double sizeX, double sizeY, double rotation)
+	: DrawableObject(posX, posY, texture, sizeX, sizeY, 0)
 {
 	this->playerName = playerName;
 	this->actualHealth = 100;
@@ -15,7 +16,7 @@ Player::Player(string playerName) : DrawableObject(300, 300, 300, 300, TextureHo
 	this->rotationSpeed = 2.5;
 	this->isAlive = true;
 
-	this->getGraph().setOrigin(this->sizeX / 2, this->sizeY / 2);
+	this->getGraph().setOrigin(this->sizeX / 2, this->sizeY / 2); // axis of rotation is at the center
 }
 
 
@@ -27,8 +28,8 @@ double Player::getRotationInRadians()
 double Player::getRotationSpeed() { return rotationSpeed; }
 
 double Player::getActualSpeedX() { return actualSpeedX; }
-
 double Player::getActualSpeedY() { return actualSpeedY; }
+double Player::getMaxSpeed() { return maxSpeed; }
 
 bool Player::getIfAlive() { return isAlive; }
 
@@ -73,22 +74,22 @@ void Player::stop()
 {
 	if (actualSpeedX > 0)
 	{
-		actualSpeedX -= acceleration;
+		actualSpeedX -= acceleration/2;
 		if (actualSpeedX < 0.001) actualSpeedX = 0;
 	}
 	if (actualSpeedY > 0)
 	{
-		actualSpeedY -= acceleration;
+		actualSpeedY -= acceleration/2;
 		if (actualSpeedY < 0.001) actualSpeedY = 0;
 	}
 	if (actualSpeedX < 0)
 	{
-		actualSpeedX += acceleration;
+		actualSpeedX += acceleration/2;
 		if (actualSpeedX > -0.001) actualSpeedX = 0;
 	}
 	if (actualSpeedY < 0)
 	{
-		actualSpeedY += acceleration;
+		actualSpeedY += acceleration/2;
 		if (actualSpeedY > -0.001) actualSpeedY = 0;
 	}
 }
@@ -112,6 +113,6 @@ void Player::rotateRight()
 
 void Player::move()
 {
-	globalPositionX += actualSpeedX;
-	globalPositionY += actualSpeedY;
+	positionX += actualSpeedX;
+	positionY += actualSpeedY;
 }

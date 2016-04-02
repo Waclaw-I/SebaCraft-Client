@@ -6,6 +6,9 @@ Texture TextureHolder::menuButtonTextures[];
 Texture TextureHolder::resolutionButtonTextures[];
 Texture TextureHolder::shipsTextures[];
 Texture TextureHolder::GUItextures[];
+Texture TextureHolder::backgroundTextures[];
+
+Font TextureHolder::fonts[];
 
 Texture & TextureHolder::getMenuButtonTexture(int index)
 {
@@ -25,6 +28,16 @@ Texture & TextureHolder::getShipsTextures(int index)
 Texture & TextureHolder::getGUItextures(int index)
 {
 	return GUItextures[index];
+}
+
+Texture & TextureHolder::getBackgroundTextures(int index)
+{
+	return backgroundTextures[index];
+}
+
+Font & TextureHolder::getFonts(int index)
+{
+	return fonts[index];
 }
 
 void TextureHolder::initializeTextureArrays()
@@ -61,5 +74,13 @@ void TextureHolder::initializeTextureArrays()
 	shipsTextures[0].loadFromFile("Graphs/Game/smallFighter.png");
 
 	GUItextures[0].loadFromFile("Graphs/Game/GUIpanel.png");
+	GUItextures[1].loadFromFile("Graphs/Game/speedDisplay.png");
+	GUItextures[2].loadFromFile("Graphs/Game/speedDisplayDot.png");
+
+	backgroundTextures[0].loadFromFile("Graphs/Game/gameBackground.png");
+	backgroundTextures[1].loadFromFile("Graphs/Game/gameBackground2.png");
+
+	fonts[0].loadFromFile("Fonts/Starcraft.otf");
+
 
 }

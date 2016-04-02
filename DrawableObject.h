@@ -7,10 +7,8 @@ using namespace sf;
 class DrawableObject
 {
 protected:
-	double windowPositionX;
-	double windowPositionY;
-	double globalPositionX;
-	double globalPositionY;
+	double positionX;
+	double positionY;
 	double sizeX;
 	double sizeY;
 	double rotation;
@@ -18,22 +16,18 @@ protected:
 
 public:
 
-	DrawableObject(double windowX, double windowY, double globalX, double globalY, Texture & texture, double sizeX, double sizeY, double rotation);
+	DrawableObject(double globalX, double globalY, Texture & texture, double sizeX, double sizeY, double rotation);
 
-	double getWindowPositionX();
-	double getWindowPositionY();
-	double getGlobalPositionX();
-	double getGlobalPositionY();
+	double getPositionX();
+	double getPositionY();
 
 	Sprite & getGraph();
 	double getSizeX();
 	double getSizeY();
 	double getRotation();
 
-	void setWindowPositionX(double x);
-	void setWindowPositionY(double y);
-	void setGlobalPositionX(double x);
-	void setGlobalPositionY(double y);
+	void setPositionX(double x);
+	void setPositionY(double y);
 
 	void setGraph(Sprite graph);
 	void setSizeX(double x);

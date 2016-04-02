@@ -128,7 +128,6 @@ bool ClientData::sendMessage(string & message)
 		return false;
 	}
 	int bufferLength = message.size();
-	cout << "Message size: " << bufferLength << endl;
 	if (!sendMessageSize(bufferLength))
 	{
 		cout << "Failed to message size" << endl;

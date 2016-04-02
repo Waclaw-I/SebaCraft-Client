@@ -1,6 +1,6 @@
 #pragma once
 
-static class GameLogic
+class GameLogic
 {
 private:
 	static int resolutionX;

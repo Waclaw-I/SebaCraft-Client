@@ -14,7 +14,7 @@ int main()
 	MainMenu Menu;
 	if (GameLogic::getGameStarted())
 	{
-		ClientData client("127.0.0.1", 33355);
+		ClientData client("25.0.252.153", 33355);
 
 		if (!client.Connect())
 		{

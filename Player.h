@@ -26,7 +26,7 @@ private:
 	// =======================
 
 public:
-	Player(string playerName);
+	Player(string playerName, Texture & texture, double posX, double posY, double sizeX, double sizeY, double rotation);
 
 	void gainHealth(int);
 	void gainAcceleration(double);
@@ -43,6 +43,7 @@ public:
 	double getRotationSpeed();
 	double getActualSpeedX();
 	double getActualSpeedY();
+	double getMaxSpeed();
 	bool getIfAlive();
 
 

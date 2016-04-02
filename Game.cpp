@@ -37,8 +37,10 @@ Game::Game(ClientData & myClient)
 	scaleFactorX = static_cast<double>(resolutionX) / static_cast<double>(VideoMode::getDesktopMode().width);
 	scaleFactorY = static_cast<double>(resolutionY) / static_cast<double>(VideoMode::getDesktopMode().height);
 
-	GUIpanel mainPanel;
-	Player player("Waclaw");
+	Player player("Waclaw", TextureHolder::getShipsTextures(0), 300, 300, 61, 51, 0); // need to change the way of doing this. Player should have a pointer to a pre-build ship and a name. Nothing more
+
+	GUIpanel mainPanel(&player);
+	mainPanel.updatePanel();
 
 	
 
@@ -52,10 +54,11 @@ Game::Game(ClientData & myClient)
 	playerCamera = gameWindow->getDefaultView();
 	playerCamera.setViewport(FloatRect(0, 0, 1, 1));
 
-	backgroundTexture.loadFromFile("Graphs/Game/gameBackground.png");
 
-	backgroundSprite.setTexture(backgroundTexture);
-	GraphMethods::ScaleSprite(backgroundSprite, resolutionX, resolutionY);
+	background.setTexture(TextureHolder::getBackgroundTextures(0));
+	background2.setTexture(TextureHolder::getBackgroundTextures(1));
+	GraphMethods::ScaleToResolution(background, 1400, 800, resolutionX, resolutionY);
+
 	GraphMethods::ScaleToResolution(mainPanel.getGraph(), 800, 600, resolutionX, resolutionY);
 
 	Clock timer;
@@ -75,26 +78,40 @@ Game::Game(ClientData & myClient)
 				if (event.type == Event::Closed)
 				{
 					GameLogic::setGameOn(false);
+					t1.detach();
 					gameWindow->close();
 				}
 				if (event.key.code == Keyboard::Escape)
 				{
-					gameWindow->close();
 					GameLogic::setGameOn(false);
+					t1.detach();
+					gameWindow->close();
+					
 				}
 			}
 
-			playerCamera.setCenter(player.getGlobalPositionX(), player.getGlobalPositionY());
-			mainPanel.getGraph().setPosition(player.getGlobalPositionX() - resolutionX/2, player.getGlobalPositionY() - resolutionY/2);
+			mainPanel.updatePosition();
+			mainPanel.updatePanel();
+
+
+			playerCamera.setCenter(player.getPositionX(), player.getPositionY());
+			mainPanel.getGraph().setPosition(mainPanel.getPositionX(), mainPanel.getPositionY());
+			background.setPosition(player.getPositionX() - resolutionX / 2, player.getPositionY() - resolutionY / 2);
+			background2.setPosition(player.getPositionX()*0.75 - resolutionX / 2, player.getPositionY()*0.75 - resolutionY / 2);
 			gameWindow->setView(playerCamera);
 
 			PlayerController::Moving(&player);
 			DisplayController::UpdatePlayerGraph(&player);
 
 			gameWindow->clear(Color::Black);
-			gameWindow->draw(backgroundSprite);
-			gameWindow->draw(mainPanel.getGraph());
+			gameWindow->draw(background);
+			gameWindow->draw(background2);
 			gameWindow->draw(player.getGraph());
+			gameWindow->draw(mainPanel.getGraph());
+			gameWindow->draw(mainPanel.getCoordinatesX());
+			gameWindow->draw(mainPanel.getCoordinatesY());
+			gameWindow->draw(mainPanel.getSpeedDisplay());
+			gameWindow->draw(mainPanel.getSpeedaDisplayDot());
 
 			gameWindow->display();
 

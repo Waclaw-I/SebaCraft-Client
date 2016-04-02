@@ -12,8 +12,8 @@ private:
 	double scaleFactorY;
 
 	bool Fullscreen;
-	sf::Texture backgroundTexture;
-	sf::Sprite  backgroundSprite;
+	sf::Sprite background;
+	sf::Sprite background2;
 	sf::RenderWindow * gameWindow;
 
 public:
