@@ -10,8 +10,9 @@ class GUIpanel : public DrawableObject
 {
 
 private:
-	Text CoordinatesX;
-	Text CoordinatesY;
+	Text coordinatesX;
+	Text coordinatesY;
+	Text enteredText;
 
 	Player * player;
 
@@ -20,6 +21,7 @@ private:
 
 	double dotIdlePositionX;
 	double dotIdlePositionY;
+
 
 	
 public:
@@ -30,6 +32,7 @@ public:
 
 	Text & getCoordinatesX();
 	Text & getCoordinatesY();
+	Text & getEnteredText();
 
 	Sprite & getSpeedDisplay();
 	Sprite & getSpeedaDisplayDot();

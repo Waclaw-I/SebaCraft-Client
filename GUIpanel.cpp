@@ -23,24 +23,28 @@ GUIpanel::GUIpanel(Player * player) : DrawableObject(0, 0, TextureHolder::getGUI
 	cout << "X: " << sizeX << endl;
 	cout << "Y: " << sizeY << endl;
 
-	CoordinatesX.setFont(TextureHolder::getFonts(0)); // we store our fonts there
-	CoordinatesY.setFont(TextureHolder::getFonts(0));
+	coordinatesX.setFont(TextureHolder::getFonts(0)); // we store our fonts there
+	coordinatesY.setFont(TextureHolder::getFonts(0));
+	enteredText.setFont(TextureHolder::getFonts(0));
 
-	CoordinatesX.setColor(Color::Black);
-	CoordinatesY.setColor(Color::Black);
+	coordinatesX.setColor(Color::Black);
+	coordinatesY.setColor(Color::Black);
+	enteredText.setColor(Color::Blue);
 
 
 	updatePanel();
 
 	if (GameLogic::getResolutionX() >= 800) // to prevent multiplying by 0
 	{
-		CoordinatesX.setCharacterSize(15 * (GameLogic::getResolutionX() / 800));
-		CoordinatesY.setCharacterSize(15 * (GameLogic::getResolutionX() / 800));
+		coordinatesX.setCharacterSize(15 * (GameLogic::getResolutionX() / 800));
+		coordinatesY.setCharacterSize(15 * (GameLogic::getResolutionX() / 800));
+		enteredText.setCharacterSize(15 * (GameLogic::getResolutionX() / 800));
 	}
 	else
 	{
-		CoordinatesX.setCharacterSize(12);
-		CoordinatesY.setCharacterSize(12);
+		coordinatesX.setCharacterSize(12);
+		coordinatesY.setCharacterSize(12);
+		enteredText.setCharacterSize(13);
 	}
 }
 
@@ -52,11 +56,12 @@ void GUIpanel::updatePosition()
 
 void GUIpanel::updatePanel()
 {
-	CoordinatesX.setString("X: " + to_string(static_cast<int>(player->getPositionX())));
-	CoordinatesY.setString("Y: " + to_string(static_cast<int>(player->getPositionY())));
+	coordinatesX.setString("X: " + to_string(static_cast<int>(player->getPositionX())));
+	coordinatesY.setString("Y: " + to_string(static_cast<int>(player->getPositionY())));
 
-	CoordinatesX.setPosition(positionX + sizeX*0.10, positionY + sizeY*0.57);
-	CoordinatesY.setPosition(positionX + sizeX*0.10, positionY + sizeY*0.64);
+	coordinatesX.setPosition(positionX + sizeX*0.10, positionY + sizeY*0.57);
+	coordinatesY.setPosition(positionX + sizeX*0.10, positionY + sizeY*0.64);
+	enteredText.setPosition(positionX + sizeX*1.5, positionY + sizeY*0.84);
 
 	speedDisplay.setPosition(positionX + sizeX*0.45, positionY + sizeY*0.55);
 	speedDisplayDot.setPosition(
@@ -68,7 +73,11 @@ void GUIpanel::updatePanel()
 		);
 }
 
-Text & GUIpanel::getCoordinatesX() { return CoordinatesX; }
-Text & GUIpanel::getCoordinatesY() { return CoordinatesY; }
+Text & GUIpanel::getCoordinatesX() { return coordinatesX; }
+Text & GUIpanel::getCoordinatesY() { return coordinatesY; }
+Text & GUIpanel::getEnteredText() { return enteredText; }
+
 Sprite & GUIpanel::getSpeedDisplay() { return speedDisplay; }
 Sprite & GUIpanel::getSpeedaDisplayDot() { return speedDisplayDot; }
+
+

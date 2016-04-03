@@ -15,21 +15,11 @@
 
 using namespace sf;
 
-void ThreadProc(ClientData & myClient)
-{
-	string message; // for chat
-	while (GameLogic::getGameOn())
-	{
-		// CHAT FUNCTION (CONSOLE FOR NOW)
-		getline(cin, message);
-		myClient.sendMessage(message);
-	}
-}
-
 Game::Game(ClientData & myClient)
 {
 	GameLogic::setGameOn(true);
-	thread t1(ThreadProc, myClient);
+
+	currentlyTyping = false;
 
 	resolutionX = GameLogic::getResolutionX();
 	resolutionY = GameLogic::getResolutionY();
@@ -41,6 +31,9 @@ Game::Game(ClientData & myClient)
 
 	GUIpanel mainPanel(&player);
 	mainPanel.updatePanel();
+
+	string typedText;
+
 
 	
 
@@ -78,17 +71,47 @@ Game::Game(ClientData & myClient)
 				if (event.type == Event::Closed)
 				{
 					GameLogic::setGameOn(false);
-					t1.detach();
 					gameWindow->close();
 				}
 				if (event.key.code == Keyboard::Escape)
 				{
 					GameLogic::setGameOn(false);
-					t1.detach();
 					gameWindow->close();
 					
 				}
+				if (event.type == Event::KeyReleased && event.key.code == Keyboard::Return)
+				{
+					currentlyTyping = !currentlyTyping;
+					cout << currentlyTyping;
+				}
+
+				if (event.type == sf::Event::TextEntered && currentlyTyping == true)
+				{
+					if (event.text.unicode < 128)
+					{
+						if (event.text.unicode == 13) // ENTER ALSO KNOWN AS RETURN
+						{
+							typedText = "";
+							mainPanel.getEnteredText().setString(typedText);
+							myClient.sendMessage(typedText); // WHEN WE HIT ENTER, WE SEND OUR MESSAGE TO THE SERVER
+							break;
+						}
+						if (event.text.unicode == 8) // BACKSPACE
+						{
+							typedText.erase(typedText.size() - 1, 1);
+							mainPanel.getEnteredText().setString(typedText);
+						}
+						if (event.text.unicode != 8 && event.text.unicode != 13)
+						{
+							typedText += static_cast<char>(event.text.unicode);
+							mainPanel.getEnteredText().setString(typedText);
+						}
+					}
+					
+				}
+
 			}
+
 
 			mainPanel.updatePosition();
 			mainPanel.updatePanel();
@@ -101,6 +124,7 @@ Game::Game(ClientData & myClient)
 			gameWindow->setView(playerCamera);
 
 			PlayerController::Moving(&player);
+			player.move();
 			DisplayController::UpdatePlayerGraph(&player);
 
 			gameWindow->clear(Color::Black);
@@ -112,6 +136,7 @@ Game::Game(ClientData & myClient)
 			gameWindow->draw(mainPanel.getCoordinatesY());
 			gameWindow->draw(mainPanel.getSpeedDisplay());
 			gameWindow->draw(mainPanel.getSpeedaDisplayDot());
+			gameWindow->draw(mainPanel.getEnteredText());
 
 			gameWindow->display();
 

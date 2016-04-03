@@ -12,6 +12,8 @@ private:
 	double scaleFactorY;
 
 	bool Fullscreen;
+	bool currentlyTyping;
+
 	sf::Sprite background;
 	sf::Sprite background2;
 	sf::RenderWindow * gameWindow;

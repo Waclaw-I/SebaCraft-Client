@@ -22,6 +22,4 @@ void PlayerController::Moving(Player * player)
 	{
 		player->stop();
 	}
-
-	player->move();
 }
