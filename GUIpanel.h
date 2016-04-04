@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "TextureHolder.h"
 #include "SFML\Graphics.hpp"
+#include <vector>
 
 using namespace sf;
 
@@ -14,6 +15,8 @@ private:
 	Text coordinatesY;
 	Text enteredText;
 
+	vector <Text> chatMessages;
+
 	Player * player;
 
 	Sprite speedDisplay;
@@ -21,6 +24,8 @@ private:
 
 	double dotIdlePositionX;
 	double dotIdlePositionY;
+
+
 
 
 	
@@ -36,5 +41,10 @@ public:
 
 	Sprite & getSpeedDisplay();
 	Sprite & getSpeedaDisplayDot();
+
+	vector <Text> & getChatMessages();
+
+	void addToChat(string text);
+
 };
 

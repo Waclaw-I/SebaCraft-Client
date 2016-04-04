@@ -20,9 +20,6 @@ GUIpanel::GUIpanel(Player * player) : DrawableObject(0, 0, TextureHolder::getGUI
 	this->speedDisplayDot.setTexture(TextureHolder::getGUItextures(2));
 	this->speedDisplayDot.setScale(xFactor, yFactor);
 
-	cout << "X: " << sizeX << endl;
-	cout << "Y: " << sizeY << endl;
-
 	coordinatesX.setFont(TextureHolder::getFonts(0)); // we store our fonts there
 	coordinatesY.setFont(TextureHolder::getFonts(0));
 	enteredText.setFont(TextureHolder::getFonts(0));
@@ -71,11 +68,53 @@ void GUIpanel::updatePanel()
 		speedDisplay.getPosition().y + (85*speedDisplay.getScale().y)/2 - (7*speedDisplayDot.getScale().y)/2 
 		+ (player->getActualSpeedY() / player->getMaxSpeed())*((65 * speedDisplay.getScale().y) / 2)
 		);
+
+	if (chatMessages.size() > 15)
+	{
+		chatMessages.erase(chatMessages.begin());
+	}
+
+	for (int i = 0; i < chatMessages.size(); i++)
+	{
+		chatMessages[i].setPosition(positionX + sizeX*0.10, positionY + sizeY*0.03 + (i*sizeY*0.03));
+	}
 }
 
 Text & GUIpanel::getCoordinatesX() { return coordinatesX; }
 Text & GUIpanel::getCoordinatesY() { return coordinatesY; }
 Text & GUIpanel::getEnteredText() { return enteredText; }
+
+vector <Text> & GUIpanel::getChatMessages() { return chatMessages; }
+void GUIpanel::addToChat(string text)
+{
+	if (text.length() > 23)
+	{
+		for (int i = 0; i < text.length(); i++)
+		{
+			if (text[i] == '\n') text.erase(i, 1); // usuwamy znaki konca linii
+		}
+		for (int i = 0; i < text.length(); i += 20)
+		{
+			Text temp;
+			temp.setColor(Color::Blue);
+			temp.setFont(TextureHolder::getFonts(0));
+			temp.setCharacterSize(11 * (GameLogic::getResolutionX() / 800)); // bigger screen means bigger size!
+			temp.setString(text.substr(i, 20));
+			chatMessages.push_back(temp);
+		}
+
+	}
+	else
+	{
+		Text newText;
+		newText.setColor(Color::Blue);
+		newText.setFont(TextureHolder::getFonts(0));
+		newText.setCharacterSize(11 * (GameLogic::getResolutionX() / 800)); // bigger screen means bigger size!
+		newText.setString(text);
+
+		chatMessages.push_back(newText);
+	}
+}
 
 Sprite & GUIpanel::getSpeedDisplay() { return speedDisplay; }
 Sprite & GUIpanel::getSpeedaDisplayDot() { return speedDisplayDot; }

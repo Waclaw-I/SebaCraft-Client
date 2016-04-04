@@ -33,6 +33,7 @@ Game::Game(ClientData & myClient)
 	mainPanel.updatePanel();
 
 	string typedText;
+	int lineLength = 0;
 
 
 	
@@ -82,7 +83,6 @@ Game::Game(ClientData & myClient)
 				if (event.type == Event::KeyReleased && event.key.code == Keyboard::Return)
 				{
 					currentlyTyping = !currentlyTyping;
-					cout << currentlyTyping;
 				}
 
 				if (event.type == sf::Event::TextEntered && currentlyTyping == true)
@@ -91,19 +91,28 @@ Game::Game(ClientData & myClient)
 					{
 						if (event.text.unicode == 13) // ENTER ALSO KNOWN AS RETURN
 						{
-							typedText = "";
-							mainPanel.getEnteredText().setString(typedText);
 							myClient.sendMessage(typedText); // WHEN WE HIT ENTER, WE SEND OUR MESSAGE TO THE SERVER
-							break;
+							mainPanel.addToChat(typedText); // AND TO CHAT
+							typedText = "";
+							lineLength = 0;
+							mainPanel.getEnteredText().setString(typedText);
+							
 						}
 						if (event.text.unicode == 8) // BACKSPACE
 						{
 							typedText.erase(typedText.size() - 1, 1);
+							lineLength--;
 							mainPanel.getEnteredText().setString(typedText);
 						}
 						if (event.text.unicode != 8 && event.text.unicode != 13)
 						{
 							typedText += static_cast<char>(event.text.unicode);
+							lineLength++;
+							if (lineLength > 40)
+							{
+								typedText += "\n";
+								lineLength = 0;
+							}
 							mainPanel.getEnteredText().setString(typedText);
 						}
 					}
@@ -137,6 +146,11 @@ Game::Game(ClientData & myClient)
 			gameWindow->draw(mainPanel.getSpeedDisplay());
 			gameWindow->draw(mainPanel.getSpeedaDisplayDot());
 			gameWindow->draw(mainPanel.getEnteredText());
+			for (int i = 0; i < mainPanel.getChatMessages().size(); i++) 
+			{
+				gameWindow->draw(mainPanel.getChatMessages()[i]);
+			}
+			
 
 			gameWindow->display();
 
