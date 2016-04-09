@@ -28,5 +28,9 @@ int main()
 
 	}
 
+	std::cout << "\n\n";
+	std::cout << "You have been disconnected from the server" << std::endl;
+	system("pause");
+
 }
 

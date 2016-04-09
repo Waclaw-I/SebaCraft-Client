@@ -19,6 +19,8 @@ Game::Game(ClientData & myClient)
 {
 	GameLogic::setGameOn(true);
 
+	thread getInformations (&ClientData::ClientThread, &myClient); // NOWY WATEK DO POBIERANIA INFORMACJI Z SERWERA
+
 	currentlyTyping = false;
 
 	resolutionX = GameLogic::getResolutionX();
@@ -61,6 +63,11 @@ Game::Game(ClientData & myClient)
 
 	while (gameWindow->isOpen())
 	{
+		if (!myClient.getCanStay())
+		{
+			gameWindow->close(); // if there is something wrong (for example no room on the server)
+			getInformations.detach();
+		}
 		accumulator += timer.restart().asSeconds();
 
 		if (accumulator >= timeStep) // timer
@@ -71,11 +78,13 @@ Game::Game(ClientData & myClient)
 			{
 				if (event.type == Event::Closed)
 				{
+					getInformations.detach();
 					GameLogic::setGameOn(false);
 					gameWindow->close();
 				}
 				if (event.key.code == Keyboard::Escape)
 				{
+					getInformations.detach();
 					GameLogic::setGameOn(false);
 					gameWindow->close();
 					
@@ -120,7 +129,11 @@ Game::Game(ClientData & myClient)
 				}
 
 			}
-
+			if (myClient.getNewMessageConfirmation()) // displaying messages from other players
+			{
+				mainPanel.addToChat(myClient.getReceivedChatMessage());
+				myClient.setNewMessageConfirmation(false);
+			}
 
 			mainPanel.updatePosition();
 			mainPanel.updatePanel();
