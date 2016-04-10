@@ -6,7 +6,11 @@
 string ClientData::getReceivedChatMessage() { return receivedChatMessage; }
 bool ClientData::getNewMessageConfirmation() { return newMessage; }
 bool ClientData::getCanStay() { return canStay; }
+SOCKET & ClientData::getSocket() { return Connection; }
 void ClientData::setNewMessageConfirmation(bool x) { newMessage = x; }
+
+string ClientData::getNickname() { return this->nickname; }
+void ClientData::setNickname(string nickname) { this->nickname = nickname; }
 
 
 ClientData::ClientData(string ip, int port)
@@ -65,11 +69,8 @@ void ClientData::ClientThread() // NEW THREAD TO RECEIVE INFORMATIONS FROM THE S
 	while (true)
 	{
 		if (!getPacketType(packetType)) break;
-		if (!processPacket(packetType))
-		{
-			cout << "Blad dla process packet" << endl;
-			break;
-		}
+		if (!processPacket(packetType)) break;
+
 	}
 	cout << "Lost connection to the server - ClientThread" << endl;
 	if (closeConnection()) cout << "Socket was closed successfuly" << endl;
@@ -132,6 +133,29 @@ bool ClientData::sendMessage(string & message)
 	if (!sendPacketType(pMessage))
 	{
 		cout << "Failed to send packet type" << endl;
+		return false;
+	}
+	int bufferLength = message.size();
+	if (!sendMessageSize(bufferLength))
+	{
+		cout << "Failed to message size" << endl;
+		return false;
+	}
+
+	int check = send(Connection, message.c_str(), bufferLength, NULL);
+	if (check == SOCKET_ERROR)
+	{
+		cout << "Failed to send message" << endl;
+		return false;
+	}
+	return true; // Message sent successfuly
+}
+
+bool ClientData::sendInitialization(string & message)
+{
+	if (!sendPacketType(pInitialize))
+	{
+		cout << "Failed to send Initialize packet" << endl;
 		return false;
 	}
 	int bufferLength = message.size();

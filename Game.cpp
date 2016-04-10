@@ -17,6 +17,9 @@ using namespace sf;
 
 Game::Game(ClientData & myClient)
 {
+	string typedText;
+	int lineLength = 0;
+
 	GameLogic::setGameOn(true);
 
 	thread getInformations (&ClientData::ClientThread, &myClient); // NOWY WATEK DO POBIERANIA INFORMACJI Z SERWERA
@@ -33,9 +36,6 @@ Game::Game(ClientData & myClient)
 
 	GUIpanel mainPanel(&player);
 	mainPanel.updatePanel();
-
-	string typedText;
-	int lineLength = 0;
 
 
 	
@@ -94,18 +94,23 @@ Game::Game(ClientData & myClient)
 					currentlyTyping = !currentlyTyping;
 				}
 
-				if (event.type == sf::Event::TextEntered && currentlyTyping == true)
+				if (event.type == sf::Event::TextEntered && currentlyTyping == true) //THIS ONE DESPERATELY NEEDS TO BE IN A SEPARATE METHOD
 				{
 					if (event.text.unicode < 128)
 					{
 						if (event.text.unicode == 13) // ENTER ALSO KNOWN AS RETURN
 						{
-							myClient.sendMessage(typedText); // WHEN WE HIT ENTER, WE SEND OUR MESSAGE TO THE SERVER
-							mainPanel.addToChat(typedText); // AND TO CHAT
+							string chatMessage = myClient.getNickname() + ": " + typedText;
+							if (typedText != "")
+							{
+								myClient.sendMessage(chatMessage); // WHEN WE HIT ENTER, WE SEND OUR MESSAGE TO THE SERVER
+								chatMessage = "You: " + typedText;
+								mainPanel.addToChat(chatMessage, Color::White); // AND TO CHAT
+							}
 							typedText = "";
 							lineLength = 0;
 							mainPanel.getEnteredText().setString(typedText);
-							
+
 						}
 						if (event.text.unicode == 8) // BACKSPACE
 						{
@@ -131,7 +136,7 @@ Game::Game(ClientData & myClient)
 			}
 			if (myClient.getNewMessageConfirmation()) // displaying messages from other players
 			{
-				mainPanel.addToChat(myClient.getReceivedChatMessage());
+				mainPanel.addToChat(myClient.getReceivedChatMessage(), Color::Red);
 				myClient.setNewMessageConfirmation(false);
 			}
 
@@ -171,4 +176,5 @@ Game::Game(ClientData & myClient)
 		}
 		
 	}
+	closesocket(myClient.getSocket());
 }

@@ -24,7 +24,16 @@ int main()
 			return 0;
 		}
 
-		else Game game(client);
+		else
+		{
+			string nick;
+			cout << "Podaj swoj pseudonim, gwiezdny pilocie: ";
+			cin >> nick;
+			client.setNickname(nick); // temporary only (whats wrong with my nickname anyway!?)
+			client.sendInitialization(client.getNickname());
+			Game game(client);
+		}
+
 
 	}
 

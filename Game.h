@@ -1,6 +1,7 @@
 #pragma once
 #include "SFML\Graphics.hpp"
 #include "ClientData.h"
+#include "GUIpanel.h"
 
 class Game
 {

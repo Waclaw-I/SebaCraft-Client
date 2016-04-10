@@ -25,6 +25,9 @@ private:
 	double dotIdlePositionX;
 	double dotIdlePositionY;
 
+	int chatCharSize;
+	int chatCharAmount;
+
 
 
 
@@ -44,7 +47,7 @@ public:
 
 	vector <Text> & getChatMessages();
 
-	void addToChat(string text);
+	void addToChat(string text, Color col);
 
 };
 

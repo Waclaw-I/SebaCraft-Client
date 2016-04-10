@@ -10,7 +10,8 @@ using namespace std;
 enum Packet
 {
 	pMessage,
-	pConsole
+	pConsole,
+	pInitialize
 };
 
 class ClientData
@@ -21,6 +22,8 @@ private:
 	string receivedChatMessage; // container for messages from other players
 	bool newMessage = false; // if true, we ll put newest message into the chat window
 	bool canStay = true; // if false, player ll be kicked from server and game window will close 
+
+	string nickname;
 
 	bool processPacket(Packet packetType);
 
@@ -45,12 +48,18 @@ public:
 	void ClientThread();
 
 	bool sendMessage(string & message);
+	bool sendInitialization(string & message); // information about nickname, choosen ship etc
 	bool closeConnection();
 
 	string getReceivedChatMessage();
 	bool getNewMessageConfirmation();
 	bool getCanStay();
 	void setNewMessageConfirmation(bool x);
+
+	string getNickname();
+	void setNickname(string nickname);
+
+	SOCKET & getSocket();
 };
 
 static ClientData * clientPtr;

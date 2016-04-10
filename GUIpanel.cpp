@@ -26,7 +26,29 @@ GUIpanel::GUIpanel(Player * player) : DrawableObject(0, 0, TextureHolder::getGUI
 
 	coordinatesX.setColor(Color::Black);
 	coordinatesY.setColor(Color::Black);
-	enteredText.setColor(Color::Blue);
+	enteredText.setColor(Color::White);
+	// IT NEEDS TO BE CHANGED INTO TEXTBOX.SIZE CHECKING INSTEAD OF NUMBER OF CHARACTERS
+	if (GameLogic::getResolutionX() <= 640)
+	{
+		chatCharSize = 9;
+		chatCharAmount = 15;
+	}
+	if (GameLogic::getResolutionX() == 800)
+	{
+		chatCharSize = 13;
+		chatCharAmount = 15;
+	}
+	if (GameLogic::getResolutionX() == 1024)
+	{
+		chatCharSize = 16;
+		chatCharAmount = 15;
+	}
+	if (GameLogic::getResolutionX() > 1024)
+	{
+		chatCharSize = (13 * (GameLogic::getResolutionX() / 800));
+		chatCharAmount = 18;
+	}
+
 
 
 	updatePanel();
@@ -85,21 +107,21 @@ Text & GUIpanel::getCoordinatesY() { return coordinatesY; }
 Text & GUIpanel::getEnteredText() { return enteredText; }
 
 vector <Text> & GUIpanel::getChatMessages() { return chatMessages; }
-void GUIpanel::addToChat(string text)
+void GUIpanel::addToChat(string text, Color col)
 {
-	if (text.length() > 23)
+	if (text.length() > chatCharAmount)
 	{
 		for (int i = 0; i < text.length(); i++)
 		{
 			if (text[i] == '\n') text.erase(i, 1); // usuwamy znaki konca linii
 		}
-		for (int i = 0; i < text.length(); i += 20)
+		for (int i = 0; i < text.length(); i += chatCharAmount)
 		{
 			Text temp;
-			temp.setColor(Color::Blue);
+			temp.setColor(col);
 			temp.setFont(TextureHolder::getFonts(0));
-			temp.setCharacterSize(11 * (GameLogic::getResolutionX() / 800)); // bigger screen means bigger size!
-			temp.setString(text.substr(i, 20));
+			temp.setCharacterSize(chatCharSize); // bigger screen means bigger size!
+			temp.setString(text.substr(i, chatCharAmount));
 			chatMessages.push_back(temp);
 		}
 
@@ -107,7 +129,7 @@ void GUIpanel::addToChat(string text)
 	else
 	{
 		Text newText;
-		newText.setColor(Color::Blue);
+		newText.setColor(col);
 		newText.setFont(TextureHolder::getFonts(0));
 		newText.setCharacterSize(11 * (GameLogic::getResolutionX() / 800)); // bigger screen means bigger size!
 		newText.setString(text);
