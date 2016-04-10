@@ -69,14 +69,14 @@ GUIpanel::GUIpanel(Player * player) : DrawableObject(0, 0, TextureHolder::getGUI
 
 void GUIpanel::updatePosition()
 {
-	positionX = player->getPositionX() - GameLogic::getResolutionX() / 2;
-	positionY = player->getPositionY() - GameLogic::getResolutionY() / 2;
+	positionX = player->getShip().getPositionX() - GameLogic::getResolutionX() / 2;
+	positionY = player->getShip().getPositionY() - GameLogic::getResolutionY() / 2;
 }
 
 void GUIpanel::updatePanel()
 {
-	coordinatesX.setString("X: " + to_string(static_cast<int>(player->getPositionX())));
-	coordinatesY.setString("Y: " + to_string(static_cast<int>(player->getPositionY())));
+	coordinatesX.setString("X: " + to_string(static_cast<int>(player->getShip().getPositionX())));
+	coordinatesY.setString("Y: " + to_string(static_cast<int>(player->getShip().getPositionY())));
 
 	coordinatesX.setPosition(positionX + sizeX*0.10, positionY + sizeY*0.57);
 	coordinatesY.setPosition(positionX + sizeX*0.10, positionY + sizeY*0.64);
@@ -85,10 +85,10 @@ void GUIpanel::updatePanel()
 	speedDisplay.setPosition(positionX + sizeX*0.45, positionY + sizeY*0.55);
 	speedDisplayDot.setPosition(
 		speedDisplay.getPosition().x + (85*speedDisplay.getScale().x)/2 - (7*speedDisplayDot.getScale().x)/2
-		+ (player->getActualSpeedX()/player->getMaxSpeed())*((65 * speedDisplay.getScale().x) / 2),
+		+ (player->getShip().getActualSpeedX()/player->getShip().getMaxSpeed())*((65 * speedDisplay.getScale().x) / 2),
 
 		speedDisplay.getPosition().y + (85*speedDisplay.getScale().y)/2 - (7*speedDisplayDot.getScale().y)/2 
-		+ (player->getActualSpeedY() / player->getMaxSpeed())*((65 * speedDisplay.getScale().y) / 2)
+		+ (player->getShip().getActualSpeedY() / player->getShip().getMaxSpeed())*((65 * speedDisplay.getScale().y) / 2)
 		);
 
 	if (chatMessages.size() > 15)

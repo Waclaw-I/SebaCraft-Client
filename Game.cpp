@@ -8,6 +8,8 @@
 #include "PlayerController.h"
 #include "DisplayController.h"
 
+#include "SmallFighter.h"
+
 #include <thread>
 #include "SFML\Graphics.hpp"
 
@@ -32,7 +34,8 @@ Game::Game(ClientData & myClient)
 	scaleFactorX = static_cast<double>(resolutionX) / static_cast<double>(VideoMode::getDesktopMode().width);
 	scaleFactorY = static_cast<double>(resolutionY) / static_cast<double>(VideoMode::getDesktopMode().height);
 
-	Player player("Waclaw", TextureHolder::getShipsTextures(0), 300, 300, 61, 51, 0); // need to change the way of doing this. Player should have a pointer to a pre-build ship and a name. Nothing more
+	SmallFighter playerShip;
+	Player player("dd", playerShip);
 
 	GUIpanel mainPanel(&player);
 	mainPanel.updatePanel();
@@ -144,20 +147,20 @@ Game::Game(ClientData & myClient)
 			mainPanel.updatePanel();
 
 
-			playerCamera.setCenter(player.getPositionX(), player.getPositionY());
+			playerCamera.setCenter(player.getShip().getPositionX(), player.getShip().getPositionY());
 			mainPanel.getGraph().setPosition(mainPanel.getPositionX(), mainPanel.getPositionY());
-			background.setPosition(player.getPositionX() - resolutionX / 2, player.getPositionY() - resolutionY / 2);
-			background2.setPosition(player.getPositionX()*0.75 - resolutionX / 2, player.getPositionY()*0.75 - resolutionY / 2);
+			background.setPosition(player.getShip().getPositionX() - resolutionX / 2, player.getShip().getPositionY() - resolutionY / 2);
+			background2.setPosition(player.getShip().getPositionX()*0.75 - resolutionX / 2, player.getShip().getPositionY()*0.75 - resolutionY / 2);
 			gameWindow->setView(playerCamera);
 
 			PlayerController::Moving(&player);
-			player.move();
+			player.getShip().move();
 			DisplayController::UpdatePlayerGraph(&player);
 
 			gameWindow->clear(Color::Black);
 			gameWindow->draw(background);
 			gameWindow->draw(background2);
-			gameWindow->draw(player.getGraph());
+			gameWindow->draw(player.getShip().getGraph());
 			gameWindow->draw(mainPanel.getGraph());
 			gameWindow->draw(mainPanel.getCoordinatesX());
 			gameWindow->draw(mainPanel.getCoordinatesY());

@@ -16,7 +16,8 @@ protected:
 
 public:
 
-	DrawableObject(double globalX, double globalY, Texture & texture, double sizeX, double sizeY, double rotation);
+	DrawableObject(double positionX, double positionY, Texture & texture, double sizeX, double sizeY, double rotation);
+	DrawableObject();
 
 	double getPositionX();
 	double getPositionY();

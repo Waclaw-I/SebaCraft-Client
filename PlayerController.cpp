@@ -8,18 +8,18 @@ void PlayerController::Moving(Player * player)
 {
 	if (Keyboard::isKeyPressed(Keyboard::A))
 	{
-		player->rotateLeft();
+		player->getShip().rotateLeft();
 	}
 	if (Keyboard::isKeyPressed(Keyboard::D))
 	{
-		player->rotateRight();
+		player->getShip().rotateRight();
 	}
 	if (Keyboard::isKeyPressed(Keyboard::W))
 	{
-		player->accelerate();
+		player->getShip().accelerate();
 	}
 	if (Keyboard::isKeyPressed(Keyboard::S))
 	{
-		player->stop();
+		player->getShip().stop();
 	}
 }

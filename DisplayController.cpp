@@ -14,12 +14,12 @@ void DisplayController::InsertNewDrawableObject(DrawableObject * object)
 
 void DisplayController::UpdatePlayerGraph(Player * player)
 {
-	double playerX = player->getPositionX();
-	double playerY = player->getPositionY();
-	double playerRotation = player->getRotation();
+	double playerX = player->getShip().getPositionX();
+	double playerY = player->getShip().getPositionY();
+	double playerRotation = player->getShip().getRotation();
 
-	player->getGraph().setPosition(playerX, playerY);
-	player->getGraph().setRotation(playerRotation);
+	player->getShip().getGraph().setPosition(playerX, playerY);
+	player->getShip().getGraph().setRotation(playerRotation);
 
 }
 
