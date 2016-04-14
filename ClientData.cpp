@@ -1,4 +1,7 @@
 #include "ClientData.h"
+#include "GameLogic.h"
+#include "Player.h"
+#include "UsefulMethods.h"
 
 #include <thread>
 
@@ -10,7 +13,11 @@ SOCKET & ClientData::getSocket() { return Connection; }
 void ClientData::setNewMessageConfirmation(bool x) { newMessage = x; }
 
 string ClientData::getNickname() { return this->nickname; }
+int ClientData::getID() { return this->ID; }
+int ClientData::getShipType() { return this->shipType; }
 void ClientData::setNickname(string nickname) { this->nickname = nickname; }
+void ClientData::setShipType(int shipType) { this->shipType = shipType; }
+void ClientData::setID(int ID) { this->ID = ID; }
 
 
 ClientData::ClientData(string ip, int port)
@@ -50,6 +57,46 @@ bool ClientData::processPacket(Packet packetType)
 				return false;
 			}
 			canStay = false;
+			break;
+		}
+
+		case pNewPlayer: // new player has joined the game!
+		{ // RETRIEVING NICKNAME, SHIP TYPE AND ID FROM THE SERVER AND CREATING NEW PLAYER OBJECT FOR OUR VECTOR OF PLAYERS
+			string data;
+			if (!getMessage(data)) return false;
+			int position;
+			position = data.find("\t");
+			string nick = data.substr(1, data.size() - (data.size() - position + 1));
+			int id = atoi(data.substr(position, data.size()).c_str());
+			int shipType = atoi(data.substr(0, 1).c_str());
+			GameLogic::getPlayersList().push_back(new Player(nick, *UsefulMethods::getSpaceShipType(shipType), id));
+			cout << "Gracz " << nick << " o typie statku: " << shipType << " oraz ID: " << id << endl;
+			break;
+		}
+
+		case pInitialize:
+		{
+			string data;
+			if (!getMessage(data)) return false; // receiving ID from server for OURSELVES
+			ID = atoi(data.c_str());
+			std::cout << "Otrzymano ID: " << ID;
+		}
+
+		case pRemovePlayer:
+		{
+			string data;
+			if (!getMessage(data)) return false; // receiving ID of removed player from the server
+			int id = atoi(data.c_str());
+
+			for (int i = 0; i < GameLogic::getPlayersList().size(); i++)
+			{
+				if (GameLogic::getPlayersList()[i]->getID() == id)
+				{
+					delete GameLogic::getPlayersList()[i];
+					GameLogic::getPlayersList().erase(GameLogic::getPlayersList().begin() + i);
+					cout << "USUNIETO GRACZA O ID: " << id << endl;
+				}
+			}
 			break;
 		}
 

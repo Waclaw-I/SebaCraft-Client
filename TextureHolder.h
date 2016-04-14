@@ -8,7 +8,7 @@ class TextureHolder
 private:
 	static Texture menuButtonTextures[12];
 	static Texture resolutionButtonTextures[15];
-	static Texture shipsTextures[1];
+	static Texture shipsTextures[2];
 	static Texture GUItextures[3];
 	static Texture backgroundTextures[2];
 

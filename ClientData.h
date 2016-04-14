@@ -11,7 +11,9 @@ enum Packet
 {
 	pMessage,
 	pConsole,
-	pInitialize
+	pInitialize,
+	pNewPlayer,
+	pRemovePlayer
 };
 
 class ClientData
@@ -23,7 +25,9 @@ private:
 	bool newMessage = false; // if true, we ll put newest message into the chat window
 	bool canStay = true; // if false, player ll be kicked from server and game window will close 
 
-	string nickname;
+	int ID;
+	string nickname; // these variables are used to create Player object
+	int shipType; // later, when the game starts
 
 	bool processPacket(Packet packetType);
 
@@ -57,7 +61,11 @@ public:
 	void setNewMessageConfirmation(bool x);
 
 	string getNickname();
+	int getID();
+	int getShipType();
 	void setNickname(string nickname);
+	void setShipType(int shipType);
+	void setID(int);
 
 	SOCKET & getSocket();
 };

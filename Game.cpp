@@ -7,8 +7,10 @@
 #include "Player.h"
 #include "PlayerController.h"
 #include "DisplayController.h"
+#include "UsefulMethods.h"
 
 #include "SmallFighter.h"
+#include "Trasher.h"
 
 #include <thread>
 #include "SFML\Graphics.hpp"
@@ -34,10 +36,12 @@ Game::Game(ClientData & myClient)
 	scaleFactorX = static_cast<double>(resolutionX) / static_cast<double>(VideoMode::getDesktopMode().width);
 	scaleFactorY = static_cast<double>(resolutionY) / static_cast<double>(VideoMode::getDesktopMode().height);
 
-	SmallFighter playerShip;
-	Player player("dd", playerShip);
+	
+	Player * player = new Player( myClient.getNickname(), *UsefulMethods::getSpaceShipType(myClient.getShipType()), myClient.getID());
+	GameLogic::getPlayersList().push_back(player);
+	cout << GameLogic::getPlayersList()[0]->getName();
 
-	GUIpanel mainPanel(&player);
+	GUIpanel mainPanel(player);
 	mainPanel.updatePanel();
 
 
@@ -147,23 +151,24 @@ Game::Game(ClientData & myClient)
 			mainPanel.updatePanel();
 
 
-			playerCamera.setCenter(player.getShip().getPositionX(), player.getShip().getPositionY());
+			playerCamera.setCenter(player->getShip().getPositionX(), player->getShip().getPositionY());
 			mainPanel.getGraph().setPosition(mainPanel.getPositionX(), mainPanel.getPositionY());
-			background.setPosition(player.getShip().getPositionX() - resolutionX / 2, player.getShip().getPositionY() - resolutionY / 2);
-			background2.setPosition(player.getShip().getPositionX()*0.75 - resolutionX / 2, player.getShip().getPositionY()*0.75 - resolutionY / 2);
+			background.setPosition(player->getShip().getPositionX() - resolutionX / 2, player->getShip().getPositionY() - resolutionY / 2);
+			background2.setPosition(player->getShip().getPositionX()*0.75 - resolutionX / 2, player->getShip().getPositionY()*0.75 - resolutionY / 2);
 			gameWindow->setView(playerCamera);
 
-			PlayerController::Moving(&player);
-			player.getShip().move();
-			DisplayController::UpdatePlayerGraph(&player);
+			PlayerController::Moving(player);
+			player->getShip().move();
+			DisplayController::UpdatePlayerGraph(player);
 
 			gameWindow->clear(Color::Black);
 			gameWindow->draw(background);
 			gameWindow->draw(background2);
-			gameWindow->draw(player.getShip().getGraph());
+			gameWindow->draw(player->getShip().getGraph());
 			gameWindow->draw(mainPanel.getGraph());
 			gameWindow->draw(mainPanel.getCoordinatesX());
 			gameWindow->draw(mainPanel.getCoordinatesY());
+			gameWindow->draw(mainPanel.getPlayersAmount());
 			gameWindow->draw(mainPanel.getSpeedDisplay());
 			gameWindow->draw(mainPanel.getSpeedaDisplayDot());
 			gameWindow->draw(mainPanel.getEnteredText());

@@ -10,9 +10,28 @@ using namespace sf;
 class GUIpanel : public DrawableObject
 {
 
+public:
+	GUIpanel(Player * player);
+
+	void updatePosition();
+	void updatePanel();
+
+	Text & getCoordinatesX();
+	Text & getCoordinatesY();
+	Text & getPlayersAmount();
+	Text & getEnteredText();
+
+	Sprite & getSpeedDisplay();
+	Sprite & getSpeedaDisplayDot();
+
+	vector <Text> & getChatMessages();
+
+	void addToChat(string text, Color col);
+
 private:
 	Text coordinatesX;
 	Text coordinatesY;
+	Text playersAmount;
 	Text enteredText;
 
 	vector <Text> chatMessages;
@@ -27,27 +46,5 @@ private:
 
 	int chatCharSize;
 	int chatCharAmount;
-
-
-
-
-	
-public:
-	GUIpanel(Player * player);
-
-	void updatePosition();
-	void updatePanel();
-
-	Text & getCoordinatesX();
-	Text & getCoordinatesY();
-	Text & getEnteredText();
-
-	Sprite & getSpeedDisplay();
-	Sprite & getSpeedaDisplayDot();
-
-	vector <Text> & getChatMessages();
-
-	void addToChat(string text, Color col);
-
 };
 

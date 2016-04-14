@@ -27,10 +27,16 @@ int main()
 		else
 		{
 			string nick;
+			string shipType;
 			cout << "Podaj swoj pseudonim, gwiezdny pilocie: ";
 			cin >> nick;
-			client.setNickname(nick); // temporary only (whats wrong with my nickname anyway!?)
-			client.sendInitialization(client.getNickname());
+			cout << "Wybierz swoj statek: \n\n1. Zwiadowca\n2. Smieciara" << endl;
+			cin >> shipType;
+			client.setNickname(nick); // this all ll be placed in a nice GUI! At least I hope so
+			client.setShipType(atoi(shipType.c_str()));
+
+			string Initializer = shipType + nick;
+			client.sendInitialization(Initializer);
 			Game game(client);
 		}
 

@@ -72,6 +72,7 @@ void TextureHolder::initializeTextureArrays()
 	resolutionButtonTextures[14].loadFromFile("Graphs/Menu/Resolution/bPressedOk.png");
 
 	shipsTextures[0].loadFromFile("Graphs/Game/smallFighter.png");
+	shipsTextures[1].loadFromFile("Graphs/Game/trasher.png");
 
 	GUItextures[0].loadFromFile("Graphs/Game/GUIpanel.png");
 	GUItextures[1].loadFromFile("Graphs/Game/speedDisplay.png");
