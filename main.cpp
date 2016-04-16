@@ -10,6 +10,7 @@
 
 int main()
 {
+
 	TextureHolder::initializeTextureArrays();
 	MainMenu Menu;
 	if (GameLogic::getGameStarted())

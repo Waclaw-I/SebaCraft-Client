@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "UsefulMethods.h"
 
+#include <Windows.h>
 #include <thread>
 
 
@@ -70,7 +71,11 @@ bool ClientData::processPacket(Packet packetType)
 			int id = atoi(data.substr(position, data.size()).c_str());
 			int shipType = atoi(data.substr(0, 1).c_str());
 			GameLogic::getPlayersList().push_back(new Player(nick, *UsefulMethods::getSpaceShipType(shipType), id));
-			cout << "Gracz " << nick << " o typie statku: " << shipType << " oraz ID: " << id << endl;
+			for (int i = 0; i < GameLogic::getPlayersList().size(); i++)
+			{
+				cout << "Gracz: " << GameLogic::getPlayersList()[i]->getName() << " ID: " << GameLogic::getPlayersList()[i]->getID() << endl;
+			}
+			cout << endl;
 			break;
 		}
 
@@ -80,6 +85,7 @@ bool ClientData::processPacket(Packet packetType)
 			if (!getMessage(data)) return false; // receiving ID from server for OURSELVES
 			ID = atoi(data.c_str());
 			std::cout << "Otrzymano ID: " << ID;
+			break;
 		}
 
 		case pRemovePlayer:
@@ -100,6 +106,12 @@ bool ClientData::processPacket(Packet packetType)
 			break;
 		}
 
+		case pPosition:
+		{
+			cout << "Otrzymano pozycje" << endl;
+			break;
+		}
+
 		default:
 		{
 			cout << "Unrecognized packet: " << packetType << endl;
@@ -110,7 +122,7 @@ bool ClientData::processPacket(Packet packetType)
 	return true;
 }
 
-void ClientData::ClientThread() // NEW THREAD TO RECEIVE INFORMATIONS FROM THE SERVER
+void ClientData::ClientThreadGetInfo() // NEW THREAD TO RECEIVE INFORMATIONS FROM THE SERVER
 {
 	Packet packetType;
 	while (true)
@@ -122,6 +134,16 @@ void ClientData::ClientThread() // NEW THREAD TO RECEIVE INFORMATIONS FROM THE S
 	cout << "Lost connection to the server - ClientThread" << endl;
 	if (closeConnection()) cout << "Socket was closed successfuly" << endl;
 	else cout << "Couldn't close the socket" << endl;
+}
+
+void ClientData::ClientThreadSendInfo(Player * player)
+{
+	while (true)
+	{
+		string position = to_string(player->getShip().getPositionX()) + "X" + to_string(player->getShip().getPositionY()) + "Y" + to_string(player->getShip().getRotation()) + "R";
+		if (!sendPosition(position)) break;
+		Sleep(10); // we dont want to take all of the server's attention for updating position
+	}
 }
 
 bool ClientData::Connect()
@@ -203,6 +225,29 @@ bool ClientData::sendInitialization(string & message)
 	if (!sendPacketType(pInitialize))
 	{
 		cout << "Failed to send Initialize packet" << endl;
+		return false;
+	}
+	int bufferLength = message.size();
+	if (!sendMessageSize(bufferLength))
+	{
+		cout << "Failed to message size" << endl;
+		return false;
+	}
+
+	int check = send(Connection, message.c_str(), bufferLength, NULL);
+	if (check == SOCKET_ERROR)
+	{
+		cout << "Failed to send message" << endl;
+		return false;
+	}
+	return true; // Message sent successfuly
+}
+
+bool ClientData::sendPosition(string & message)
+{
+	if (!sendPacketType(pPosition))
+	{
+		cout << "Failed to send Position packet" << endl;
 		return false;
 	}
 	int bufferLength = message.size();

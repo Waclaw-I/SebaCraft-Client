@@ -26,7 +26,7 @@ Game::Game(ClientData & myClient)
 
 	GameLogic::setGameOn(true);
 
-	thread getInformations (&ClientData::ClientThread, &myClient); // NOWY WATEK DO POBIERANIA INFORMACJI Z SERWERA
+	thread getInformations (&ClientData::ClientThreadGetInfo, &myClient); // NOWY WATEK DO POBIERANIA INFORMACJI Z SERWERA
 
 	currentlyTyping = false;
 
@@ -38,8 +38,8 @@ Game::Game(ClientData & myClient)
 
 	
 	Player * player = new Player( myClient.getNickname(), *UsefulMethods::getSpaceShipType(myClient.getShipType()), myClient.getID());
-	GameLogic::getPlayersList().push_back(player);
-	cout << GameLogic::getPlayersList()[0]->getName();
+
+	thread sendInformations(&ClientData::ClientThreadSendInfo, &myClient, player); // NOWY WATEK DO WYSYLANIA INFORMACJI DO SERWERA
 
 	GUIpanel mainPanel(player);
 	mainPanel.updatePanel();
@@ -86,12 +86,14 @@ Game::Game(ClientData & myClient)
 				if (event.type == Event::Closed)
 				{
 					getInformations.detach();
+					sendInformations.detach();
 					GameLogic::setGameOn(false);
 					gameWindow->close();
 				}
 				if (event.key.code == Keyboard::Escape)
 				{
 					getInformations.detach();
+					sendInformations.detach();
 					GameLogic::setGameOn(false);
 					gameWindow->close();
 					

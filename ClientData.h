@@ -5,6 +5,8 @@
 #include <WinSock2.h> //For win sockets
 #include <string>
 #include <iostream>
+
+#include "Player.h"
 using namespace std;
 
 enum Packet
@@ -13,7 +15,8 @@ enum Packet
 	pConsole,
 	pInitialize,
 	pNewPlayer,
-	pRemovePlayer
+	pRemovePlayer,
+	pPosition
 };
 
 class ClientData
@@ -49,10 +52,12 @@ public:
 	ClientData(string ip, int port);
 	bool Connect();
 
-	void ClientThread();
+	void ClientThreadGetInfo();
+	void ClientThreadSendInfo(Player * player);
 
 	bool sendMessage(string & message);
 	bool sendInitialization(string & message); // information about nickname, choosen ship etc
+	bool sendPosition(string & message);
 	bool closeConnection();
 
 	string getReceivedChatMessage();
