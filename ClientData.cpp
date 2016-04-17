@@ -108,9 +108,28 @@ bool ClientData::processPacket(Packet packetType)
 
 		case pPosition:
 		{
-			string data;
-			if (!getMessage(data)) return false;			
+			string position;
+			cout << position << endl;
+			if (!getMessage(position)) return false;			
 			break;
+
+			int xParserPos = position.find("X");
+			int yParserPos = position.find("Y");
+			int rParserPos = position.find("R");
+
+			int ID = atoi(position.substr(0, xParserPos).c_str());
+			double positionX = atof(position.substr(xParserPos + 1, yParserPos - xParserPos - 1).c_str());
+			double positionY = atof(position.substr(yParserPos + 1, rParserPos - yParserPos - 1).c_str());
+			double rotation = atof(position.substr(rParserPos + 1, position.size() - rParserPos - 1).c_str());
+
+			cout << "ID: " << ID << endl;
+			cout << "X: " << positionX << endl;
+			cout << "Y: " << positionY << endl;
+			cout << "R " << rotation << endl;
+
+			//client.getShipData().setPositionX(positionX);
+			//client.getShipData().setPositionY(positionY);
+			//client.getShipData().setRotation(rotation);
 		}
 
 		default:
