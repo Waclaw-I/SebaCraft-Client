@@ -108,7 +108,8 @@ bool ClientData::processPacket(Packet packetType)
 
 		case pPosition:
 		{
-			cout << "Otrzymano pozycje" << endl;
+			string data;
+			if (!getMessage(data)) return false;			
 			break;
 		}
 
@@ -156,7 +157,6 @@ bool ClientData::Connect()
 	}
 
 	cout << "Connected!" << endl;
-	//CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ClientThread, NULL, NULL, NULL); IT WONT BE NEEDED, PROBABLY
 	return true;
 }
 
