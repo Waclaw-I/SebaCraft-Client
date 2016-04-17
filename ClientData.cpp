@@ -75,7 +75,6 @@ bool ClientData::processPacket(Packet packetType)
 			{
 				cout << "Gracz: " << GameLogic::getPlayersList()[i]->getName() << " ID: " << GameLogic::getPlayersList()[i]->getID() << endl;
 			}
-			cout << endl;
 			break;
 		}
 
@@ -109,9 +108,8 @@ bool ClientData::processPacket(Packet packetType)
 		case pPosition:
 		{
 			string position;
-			cout << position << endl;
+			
 			if (!getMessage(position)) return false;			
-			break;
 
 			int xParserPos = position.find("X");
 			int yParserPos = position.find("Y");
@@ -122,14 +120,16 @@ bool ClientData::processPacket(Packet packetType)
 			double positionY = atof(position.substr(yParserPos + 1, rParserPos - yParserPos - 1).c_str());
 			double rotation = atof(position.substr(rParserPos + 1, position.size() - rParserPos - 1).c_str());
 
-			cout << "ID: " << ID << endl;
-			cout << "X: " << positionX << endl;
-			cout << "Y: " << positionY << endl;
-			cout << "R " << rotation << endl;
-
-			//client.getShipData().setPositionX(positionX);
-			//client.getShipData().setPositionY(positionY);
-			//client.getShipData().setRotation(rotation);
+			for (int i = 0; i < GameLogic::getPlayersList().size(); i++)
+			{
+				if (GameLogic::getPlayersList()[i]->getID() == ID)
+				{
+					GameLogic::getPlayersList()[i]->getShip().setPositionX(positionX);
+					GameLogic::getPlayersList()[i]->getShip().setPositionY(positionY);
+					GameLogic::getPlayersList()[i]->getShip().setRotation(rotation);
+				}
+			}
+			break;
 		}
 
 		default:

@@ -167,6 +167,11 @@ Game::Game(ClientData & myClient)
 			gameWindow->draw(background);
 			gameWindow->draw(background2);
 			gameWindow->draw(player->getShip().getGraph());
+			for (int i = 0; i < GameLogic::getPlayersList().size(); i++)
+			{
+				GameLogic::getPlayersList()[i]->updateGraphPosition();
+				gameWindow->draw(GameLogic::getPlayersList()[i]->getShip().getGraph());
+			}
 			gameWindow->draw(mainPanel.getGraph());
 			gameWindow->draw(mainPanel.getCoordinatesX());
 			gameWindow->draw(mainPanel.getCoordinatesY());

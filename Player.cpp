@@ -18,3 +18,9 @@ void Player::setName(std::string name) { this->name = name; }
 void Player::setShip(SpaceShip ship) { this->ship = ship; }
 void Player::setID(int ID) { this->ID = ID; }
 
+void Player::updateGraphPosition()
+{
+	ship.getGraph().setPosition(ship.getPositionX(), ship.getPositionY());
+	ship.getGraph().setRotation(ship.getRotation());
+}
+

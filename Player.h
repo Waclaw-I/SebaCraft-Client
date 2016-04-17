@@ -26,4 +26,6 @@ public:
 	void setShip(SpaceShip ship);
 	void setID(int ID);
 
+	void updateGraphPosition();
+
 };
