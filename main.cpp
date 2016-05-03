@@ -43,8 +43,15 @@ int main()
 			Game game(client);
 		}
 
+		if (!GameLogic::getGameOn)
+		{
+			string msg = "";
+			client.sendLeftAlert(msg);
+		}
+
 
 	}
+
 
 	std::cout << "\n\n";
 	std::cout << "You have been disconnected from the server" << std::endl;

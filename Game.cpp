@@ -27,6 +27,7 @@ Game::Game(ClientData & myClient)
 	GameLogic::setGameOn(true);
 
 	thread getInformations (&ClientData::ClientThreadGetInfo, &myClient); // NOWY WATEK DO POBIERANIA INFORMACJI Z SERWERA
+	getInformations.detach();
 
 	currentlyTyping = false;
 
@@ -40,6 +41,8 @@ Game::Game(ClientData & myClient)
 	Player * player = new Player( myClient.getNickname(), *UsefulMethods::getSpaceShipType(myClient.getShipType()), myClient.getID());
 
 	thread sendInformations(&ClientData::ClientThreadSendInfo, &myClient, player); // NOWY WATEK DO WYSYLANIA INFORMACJI DO SERWERA
+	sendInformations.detach();
+
 
 	GUIpanel mainPanel(player);
 	mainPanel.updatePanel();
@@ -73,7 +76,7 @@ Game::Game(ClientData & myClient)
 		if (!myClient.getCanStay())
 		{
 			gameWindow->close(); // if there is something wrong (for example no room on the server)
-			getInformations.detach();
+			
 		}
 		accumulator += timer.restart().asSeconds();
 
@@ -85,16 +88,16 @@ Game::Game(ClientData & myClient)
 			{
 				if (event.type == Event::Closed)
 				{
-					getInformations.detach();
-					sendInformations.detach();
 					GameLogic::setGameOn(false);
+					string left = ""; // plain text to use send method
+					myClient.sendLeftAlert(left);
 					gameWindow->close();
 				}
 				if (event.key.code == Keyboard::Escape)
 				{
-					getInformations.detach();
-					sendInformations.detach();
 					GameLogic::setGameOn(false);
+					string left = ""; // plain text to use send method
+					myClient.sendLeftAlert(left);
 					gameWindow->close();
 					
 				}
@@ -191,5 +194,7 @@ Game::Game(ClientData & myClient)
 		}
 		
 	}
+	string left = ""; // plain text to use send method
+	myClient.sendLeftAlert(left);
 	closesocket(myClient.getSocket());
 }

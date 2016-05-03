@@ -57,6 +57,7 @@ public:
 
 	bool sendMessage(string & message);
 	bool sendInitialization(string & message); // information about nickname, choosen ship etc
+	bool sendLeftAlert(string & message);
 	bool sendPosition(string & message);
 	bool closeConnection();
 

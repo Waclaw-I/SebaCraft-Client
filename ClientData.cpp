@@ -35,6 +35,7 @@ ClientData::ClientData(string ip, int port)
 	addr.sin_port = htons(port);
 	addr.sin_family = AF_INET;
 	clientPtr = this;
+
 }
 
 bool ClientData::processPacket(Packet packetType)
@@ -145,10 +146,10 @@ bool ClientData::processPacket(Packet packetType)
 void ClientData::ClientThreadGetInfo() // NEW THREAD TO RECEIVE INFORMATIONS FROM THE SERVER
 {
 	Packet packetType;
-	while (true)
+	while (GameLogic::getGameOn())
 	{
-		if (!getPacketType(packetType)) break;
-		if (!processPacket(packetType)) break;
+		if (!getPacketType(packetType)) std::cout << "Failed to get packet from server..." << std::endl;
+		if (!processPacket(packetType)) std::cout << "Failed to process packet from server..." << std::endl;
 
 	}
 	cout << "Lost connection to the server - ClientThread" << endl;
@@ -158,11 +159,11 @@ void ClientData::ClientThreadGetInfo() // NEW THREAD TO RECEIVE INFORMATIONS FRO
 
 void ClientData::ClientThreadSendInfo(Player * player)
 {
-	while (true)
+	while (GameLogic::getGameOn())
 	{
 		string position = to_string(player->getShip().getPositionX()) + "X" + to_string(player->getShip().getPositionY()) + "Y" + to_string(player->getShip().getRotation()) + "R";
-		if (!sendPosition(position)) break;
-		Sleep(10); // we dont want to take all of the server's attention for updating position
+		if (!sendPosition(position)) std::cout << "Failed to send position packet to the server" << std::endl;
+		Sleep(16);
 	}
 }
 
@@ -262,6 +263,29 @@ bool ClientData::sendInitialization(string & message)
 	return true; // Message sent successfuly
 }
 
+bool ClientData::sendLeftAlert(string & message)
+{
+	if (!sendPacketType(pRemovePlayer))
+	{
+		cout << "Failed to send Initialize packet" << endl;
+		return false;
+	}
+	int bufferLength = message.size();
+	if (!sendMessageSize(bufferLength))
+	{
+		cout << "Failed to message size" << endl;
+		return false;
+	}
+
+	int check = send(Connection, message.c_str(), bufferLength, NULL);
+	if (check == SOCKET_ERROR)
+	{
+		cout << "Failed to send message" << endl;
+		return false;
+	}
+	return true; // Message sent successfuly
+}
+
 bool ClientData::sendPosition(string & message)
 {
 	if (!sendPacketType(pPosition))
@@ -317,7 +341,6 @@ bool ClientData::getMessage(string & message)
 	int bufferLength;
 	if (!getMessageSize(bufferLength))
 	{
-		cout << "tutaj" << endl;
 		return false;
 	}
 	char * buffer = new char[bufferLength + 1];
