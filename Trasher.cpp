@@ -24,4 +24,9 @@ Trasher::Trasher()
 	rotationSpeed = 2.5; // not as impressive as Small Fighter
 	graph.setTexture(TextureHolder::getShipsTextures(1)); // texture of Trasher
 	graph.setOrigin(sizeX / 2, sizeY / 2); // center of our texture
+
+	leftMachineGun.setX(38); // spawn points for this specific ship
+	leftMachineGun.setY(-16); // used to spawn bullets
+	rightMachineGun.setX(38);
+	rightMachineGun.setY(17); // if this class grows, I ll consider making some sort of initialization method
 }

@@ -7,6 +7,7 @@ Texture TextureHolder::resolutionButtonTextures[];
 Texture TextureHolder::shipsTextures[];
 Texture TextureHolder::GUItextures[];
 Texture TextureHolder::backgroundTextures[];
+Texture TextureHolder::bulletsTextures[];
 
 Font TextureHolder::fonts[];
 
@@ -33,6 +34,11 @@ Texture & TextureHolder::getGUItextures(int index)
 Texture & TextureHolder::getBackgroundTextures(int index)
 {
 	return backgroundTextures[index];
+}
+
+Texture & TextureHolder::getBulletsTextures(int index)
+{
+	return bulletsTextures[index];
 }
 
 Font & TextureHolder::getFonts(int index)
@@ -80,6 +86,8 @@ void TextureHolder::initializeTextureArrays()
 
 	backgroundTextures[0].loadFromFile("Graphs/Game/gameBackground.png");
 	backgroundTextures[1].loadFromFile("Graphs/Game/gameBackground2.png");
+
+	bulletsTextures[0].loadFromFile("Graphs/Game/Bullets/BasicBullet.png");
 
 	fonts[0].loadFromFile("Fonts/Starcraft.otf");
 

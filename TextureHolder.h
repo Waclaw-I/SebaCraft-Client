@@ -11,6 +11,7 @@ private:
 	static Texture shipsTextures[2];
 	static Texture GUItextures[3];
 	static Texture backgroundTextures[2];
+	static Texture bulletsTextures[1];
 
 	static Font fonts[1];
 
@@ -22,6 +23,7 @@ public:
 	static Texture & getShipsTextures(int index);
 	static Texture & getGUItextures(int index);
 	static Texture & getBackgroundTextures(int index);
+	static Texture & getBulletsTextures(int index);
 
 	static Font & getFonts(int index);
 };
