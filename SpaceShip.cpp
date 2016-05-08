@@ -64,6 +64,7 @@ SpaceShip::SpaceShip()
 
 	this->positionX = rand() % 1000;
 	this->positionY = rand() % 1000;
+	this->alive = true;
 }
 
 // OTHER METHODS
