@@ -1,4 +1,5 @@
 #include "SpaceShip.h"
+#include <cstdlib>
 
 #include <iostream>
 
@@ -60,6 +61,9 @@ SpaceShip::SpaceShip()
 	this->actualSpeedX = 0;
 	this->actualSpeedY = 0;
 	this->maxSpeed = 2;
+
+	this->positionX = rand() % 1000;
+	this->positionY = rand() % 1000;
 }
 
 // OTHER METHODS

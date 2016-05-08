@@ -5,8 +5,6 @@
 
 Trasher::Trasher()
 {
-	positionX = 300;
-	positionY = 300;
 	actualHealth = 200;
 	maxHealth = 200;
 	actualEnergy = 150;

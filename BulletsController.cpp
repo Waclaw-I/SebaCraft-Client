@@ -23,12 +23,17 @@ void BulletsController::removeBullet(Bullet * bullet)
 	bulletsInGame.remove(bullet);
 }
 
-//bool BulletsController::checkIfGone(Bullet * bullet)
-//{
-//	if (!bullet->isAlive())
-//	{
-//		delete; // returns true if ready to be deleted
-//}
+void BulletsController::lookForCollisions(Player * player)
+{
+	for (Bullet * x : bulletsInGame)
+	if (x->checkCollisionForThisClient(player))
+	{
+		player->getShip()->decreaseHealth(x->getDamage());
+		x->setAlive(false);
+		continue;
+	}
+	else if (x->checkCollisionForOthers()) x->setAlive(false);
+}
 
 void BulletsController::moveBullets()
 {

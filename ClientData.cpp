@@ -139,6 +139,7 @@ bool ClientData::processPacket(Packet packetType)
 			string bulletInformation;
 			if (!getMessage(bulletInformation)) return false;
 
+			int idParserPos = bulletInformation.find("I");
 			int tParserPos = bulletInformation.find("T");
 			int xParserPos = bulletInformation.find("X");
 			int yParserPos = bulletInformation.find("Y");
@@ -147,10 +148,11 @@ bool ClientData::processPacket(Packet packetType)
 			int durationParserPos = bulletInformation.find("D");
 			int damageParserPos = bulletInformation.find("A");
 
-			int type, positionX, positionY, damage;
+			int type, positionX, positionY, damage, id;
 			double rotation, duration, speed;
 
-			type = atoi(bulletInformation.substr(0, tParserPos).c_str());
+			id = atoi(bulletInformation.substr(0, idParserPos).c_str());
+			type = atoi(bulletInformation.substr(idParserPos + 1, tParserPos - idParserPos - 1).c_str());
 			positionX = atoi(bulletInformation.substr(tParserPos + 1, xParserPos - tParserPos - 1).c_str());
 			positionY = atoi(bulletInformation.substr(xParserPos + 1, yParserPos - xParserPos - 1).c_str());
 			rotation = atof(bulletInformation.substr(yParserPos + 1, rParserPos - yParserPos - 1).c_str());
@@ -160,7 +162,7 @@ bool ClientData::processPacket(Packet packetType)
 
 			if (type == 1)
 			{
-				MGunBullet * bullet = new MGunBullet(positionX, positionY, rotation, speed, duration, damage);
+				MGunBullet * bullet = new MGunBullet(positionX, positionY, rotation, speed, duration, damage, id);
 			}
 
 			break;

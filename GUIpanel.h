@@ -19,6 +19,7 @@ public:
 	Text & getCoordinatesX();
 	Text & getCoordinatesY();
 	Text & getPlayersAmount();
+	Text & getHealth();
 	Text & getEnteredText();
 
 	Sprite & getSpeedDisplay();
@@ -32,6 +33,7 @@ private:
 	Text coordinatesX;
 	Text coordinatesY;
 	Text playersAmount;
+	Text health;
 	Text enteredText;
 
 	vector <Text> chatMessages;

@@ -73,7 +73,7 @@ Game::Game(ClientData & myClient)
 	float accumulator = 0;
 	float timeStep = 0.0166f; // 60FPS
 
-	while (gameWindow->isOpen())
+	while (gameWindow->isOpen() && player->getShip()->isAlive())
 	{
 		if (!myClient.getCanStay())
 		{
@@ -158,7 +158,7 @@ Game::Game(ClientData & myClient)
 			mainPanel.updatePanel();
 
 
-			playerCamera.setCenter(player->getShip()->getPositionX(), player->getShip()->getPositionY());
+			playerCamera.setCenter(player->getShip()->getPositionX() - mainPanel.getSizeX()/2 + player->getShip()->getSizeX()/2, player->getShip()->getPositionY());
 			mainPanel.getGraph().setPosition(mainPanel.getPositionX(), mainPanel.getPositionY());
 			background.setPosition(player->getShip()->getPositionX() - resolutionX / 2, player->getShip()->getPositionY() - resolutionY / 2);
 			background2.setPosition(player->getShip()->getPositionX()*0.75 - resolutionX / 2, player->getShip()->getPositionY()*0.75 - resolutionY / 2);
@@ -169,6 +169,7 @@ Game::Game(ClientData & myClient)
 			player->updateGraphPosition();
 
 			BulletsController::getBulletsController().controllBullets();
+			BulletsController::getBulletsController().lookForCollisions(player);
 
 			
 
@@ -191,6 +192,7 @@ Game::Game(ClientData & myClient)
 			gameWindow->draw(mainPanel.getCoordinatesX());
 			gameWindow->draw(mainPanel.getCoordinatesY());
 			gameWindow->draw(mainPanel.getPlayersAmount());
+			gameWindow->draw(mainPanel.getHealth());
 			gameWindow->draw(mainPanel.getSpeedDisplay());
 			gameWindow->draw(mainPanel.getSpeedaDisplayDot());
 			gameWindow->draw(mainPanel.getEnteredText());
@@ -208,6 +210,8 @@ Game::Game(ClientData & myClient)
 		}
 		
 	}
+	gameWindow->close();
+	GameLogic::setGameOn(false);
 	string left = ""; // plain text to use send method
 	myClient.sendLeftAlert(left);
 	closesocket(myClient.getSocket());

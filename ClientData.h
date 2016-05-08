@@ -22,32 +22,6 @@ enum Packet
 
 class ClientData
 {
-private:
-
-
-	string receivedChatMessage; // container for messages from other players
-	bool newMessage = false; // if true, we ll put newest message into the chat window
-	bool canStay = true; // if false, player ll be kicked from server and game window will close 
-
-	int ID;
-	string nickname; // these variables are used to create Player object
-	int shipType; // later, when the game starts
-
-	bool processPacket(Packet packetType);
-
-	bool sendMessageSize(int size);
-	bool sendPacketType(Packet packetType);
-
-	bool getMessageSize(int & size);
-	bool getPacketType(Packet & packetType);
-	bool getMessage(string &message);
-	bool getConsoleMessage();
-
-
-	SOCKET Connection;//This client's connection to the server
-	SOCKADDR_IN addr; //Address to be binded to our Connection socket
-	int sizeofaddr = sizeof(addr); //Need sizeofaddr for the connect function
-	
 public:
 
 	ClientData();
@@ -77,6 +51,32 @@ public:
 	void setID(int);
 
 	SOCKET & getSocket();
+
+private:
+
+
+	string receivedChatMessage; // container for messages from other players
+	bool newMessage = false; // if true, we ll put newest message into the chat window
+	bool canStay = true; // if false, player ll be kicked from server and game window will close 
+
+	int ID;
+	string nickname; // these variables are used to create Player object
+	int shipType; // later, when the game starts
+
+	bool processPacket(Packet packetType);
+
+	bool sendMessageSize(int size);
+	bool sendPacketType(Packet packetType);
+
+	bool getMessageSize(int & size);
+	bool getPacketType(Packet & packetType);
+	bool getMessage(string &message);
+	bool getConsoleMessage();
+
+
+	SOCKET Connection;//This client's connection to the server
+	SOCKADDR_IN addr; //Address to be binded to our Connection socket
+	int sizeofaddr = sizeof(addr); //Need sizeofaddr for the connect function
 };
 
 static ClientData * clientPtr;

@@ -28,12 +28,13 @@ MGunBullet::MGunBullet(double positionX, double positionY, double rotation): // 
 
 }
 
-MGunBullet::MGunBullet(double positionX, double positionY, double rotation, double speed, double duration, int damage) // BULLET FROM SERVER
+MGunBullet::MGunBullet(double positionX, double positionY, double rotation, double speed, double duration, int damage, int playerID) // BULLET FROM SERVER
 	: Bullet(damage, speed, duration)
 {
 	this->positionX = positionX;
 	this->positionY = positionY;
 	this->rotation = rotation;
+	this->playerID = playerID;
 
 	this->allied = false;
 

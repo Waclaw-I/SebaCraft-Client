@@ -23,11 +23,13 @@ GUIpanel::GUIpanel(Player * player) : DrawableObject(0, 0, TextureHolder::getGUI
 	coordinatesX.setFont(TextureHolder::getFonts(0)); // we store our fonts there
 	coordinatesY.setFont(TextureHolder::getFonts(0));
 	playersAmount.setFont(TextureHolder::getFonts(0));
+	health.setFont(TextureHolder::getFonts(0));
 	enteredText.setFont(TextureHolder::getFonts(0));
 
 	coordinatesX.setColor(Color::Black);
 	coordinatesY.setColor(Color::Black);
 	playersAmount.setColor(Color::Black);
+	health.setColor(Color::Black);
 	enteredText.setColor(Color::White);
 	// IT NEEDS TO BE CHANGED INTO TEXTBOX.SIZE CHECKING INSTEAD OF NUMBER OF CHARACTERS
 	if (GameLogic::getResolutionX() <= 640)
@@ -60,6 +62,7 @@ GUIpanel::GUIpanel(Player * player) : DrawableObject(0, 0, TextureHolder::getGUI
 		coordinatesX.setCharacterSize(15 * (GameLogic::getResolutionX() / 800));
 		coordinatesY.setCharacterSize(15 * (GameLogic::getResolutionX() / 800));
 		playersAmount.setCharacterSize(15 * (GameLogic::getResolutionX() / 800));
+		health.setCharacterSize(15 * (GameLogic::getResolutionX() / 800));
 		enteredText.setCharacterSize(15 * (GameLogic::getResolutionX() / 800));
 	}
 	else
@@ -67,25 +70,29 @@ GUIpanel::GUIpanel(Player * player) : DrawableObject(0, 0, TextureHolder::getGUI
 		coordinatesX.setCharacterSize(12);
 		coordinatesY.setCharacterSize(12);
 		playersAmount.setCharacterSize(12);
+		health.setCharacterSize(12);
 		enteredText.setCharacterSize(13);
 	}
 }
 
 void GUIpanel::updatePosition()
 {
-	positionX = player->getShip()->getPositionX() - GameLogic::getResolutionX() / 2;
-	positionY = player->getShip()->getPositionY() - GameLogic::getResolutionY() / 2;
+	positionX = player->getShip()->getPositionX() - (GameLogic::getResolutionX() / 2) - sizeX/2 + player->getShip()->getSizeX()/2;
+	positionY = player->getShip()->getPositionY() - (GameLogic::getResolutionY() / 2);
 }
 
 void GUIpanel::updatePanel()
 {
 	coordinatesX.setString("X: " + to_string(static_cast<int>(player->getShip()->getPositionX())));
 	coordinatesY.setString("Y: " + to_string(static_cast<int>(player->getShip()->getPositionY())));
-	playersAmount.setString("Graczy: " + std::to_string(GameLogic::getPlayersList().size()));
+	playersAmount.setString("Graczy: " + std::to_string(GameLogic::getPlayersList().size() + 1)); // plus ourselves
+	health.setString("HP: " + std::to_string(player->getShip()->getActualHealth()) + " / " + std::to_string(player->getShip()->getMaxHealth()));
+
 
 	coordinatesX.setPosition(positionX + sizeX*0.10, positionY + sizeY*0.57);
 	coordinatesY.setPosition(positionX + sizeX*0.10, positionY + sizeY*0.64);
 	playersAmount.setPosition(positionX + sizeX*0.10, positionY + sizeY*0.71);
+	health.setPosition(positionX + sizeX*0.10, positionY + sizeY*0.78);
 	enteredText.setPosition(positionX + sizeX*1.5, positionY + sizeY*0.84);
 
 	speedDisplay.setPosition(positionX + sizeX*0.45, positionY + sizeY*0.55);
@@ -112,6 +119,7 @@ Text & GUIpanel::getCoordinatesX() { return coordinatesX; }
 Text & GUIpanel::getCoordinatesY() { return coordinatesY; }
 Text & GUIpanel::getEnteredText() { return enteredText; }
 Text & GUIpanel::getPlayersAmount() { return playersAmount; }
+Text & GUIpanel::getHealth() { return health; }
 
 vector <Text> & GUIpanel::getChatMessages() { return chatMessages; }
 void GUIpanel::addToChat(string text, Color col)

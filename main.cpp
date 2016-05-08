@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <conio.h>
+#include <time.h>
 
 #include "MainMenu.h"
 #include "TextureHolder.h"
@@ -10,6 +11,7 @@
 
 int main()
 {
+	srand(time(NULL));
 
 	TextureHolder::initializeTextureArrays();
 	MainMenu Menu;

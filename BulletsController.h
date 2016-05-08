@@ -10,7 +10,7 @@ public:
 
 	void addBullet(Bullet * bullet);
 	void removeBullet(Bullet * bullet);
-	//bool checkIfGone(Bullet * bullet);
+	void lookForCollisions(Player * player);
 	
 	void controllBullets();
 
