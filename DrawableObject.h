@@ -31,6 +31,7 @@ public:
 	void setPositionY(double y);
 
 	void setGraph(Sprite graph);
+	void updateGraphPosition();
 	void setSizeX(double x);
 	void setSizeY(double y);
 	void setRotation(double rotation);

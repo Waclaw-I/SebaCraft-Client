@@ -7,5 +7,8 @@ private:
 
 public:
 
+	void updateTurrets() override;
+	void shoot() override;
+
 	SmallFighter();
 };

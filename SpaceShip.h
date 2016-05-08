@@ -4,24 +4,9 @@
 // all data about size, position, rotation and graphic are inherited from DrawableObject
 class SpaceShip : public DrawableObject
 {
-protected:
-	int actualHealth;
-	int actualEnergy;
-	int actualArmour;
-	double actualSpeedX;
-	double actualSpeedY;
-	double acceleration;
-
-	int maxHealth;
-	int maxEnergy;
-	int maxArmour;
-	double maxSpeed;
-
-	bool alive;
-	double rotationSpeed;
 
 public:
-	
+
 	int getActualHealth();
 	int getActualEnergy();
 	int getActualArmour();
@@ -54,7 +39,7 @@ public:
 
 	SpaceShip(); // default constructor with values meaned to be changed later
 	SpaceShip(double positionX, double positionY, Texture & texture, double sizeX, double sizeY, double rotation, // for DrawableObject constructor
-			  int health, int energy, int armour, int maxSpeed); // for SpaceShip variables
+		int health, int energy, int armour, int maxSpeed); // for SpaceShip variables
 
 
 
@@ -71,5 +56,26 @@ public:
 	void move();
 	void rotateLeft();
 	void rotateRight();
+
+	virtual void updateTurrets();
+	virtual void shoot() = 0; // czysto wirtualna
+
+protected:
+	int actualHealth;
+	int actualEnergy;
+	int actualArmour;
+	double actualSpeedX; 
+	double actualSpeedY;
+	double acceleration;
+
+	int maxHealth;
+	int maxEnergy;
+	int maxArmour;
+	double maxSpeed;
+
+	bool alive;
+	double rotationSpeed;
+
+
 
 };

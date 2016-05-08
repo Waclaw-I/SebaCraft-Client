@@ -9,7 +9,6 @@ private:
 
 
 public:
-	static double getRotationInRadians(double rotation);
 
 	static SpaceShip * getSpaceShipType(int shipType);
 };

@@ -8,13 +8,24 @@ public:
 
 	static BulletsController & getBulletsController();
 
+	void addBullet(Bullet * bullet);
+	void removeBullet(Bullet * bullet);
+	//bool checkIfGone(Bullet * bullet);
+	
+	void controllBullets();
+
 	std::list <Bullet *> & getBulletsInGame();
-	void addBullet(Bullet *);
-	void removeBullet(Bullet *);
+
+	
 private:
 
 	BulletsController();
 	BulletsController(const BulletsController &);
 
 	std::list <Bullet *> bulletsInGame;
+	
+	
+
+	void moveBullets();
+	void deleteDeadBullets();
 };

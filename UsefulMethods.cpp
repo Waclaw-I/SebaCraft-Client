@@ -1,9 +1,5 @@
 #include "UsefulMethods.h"
 
-double UsefulMethods::getRotationInRadians(double rotation)
-{
-	return (rotation * (3.14 / 180));
-}
 
 
 SpaceShip * UsefulMethods::getSpaceShipType(int shipType)

@@ -13,13 +13,21 @@ public:
 
 	virtual void move();
 	double getDuration();
+	double getSpeed();
+	int getDamage();
 	bool isCollided();
-	void decreaseDuration(double);
+	void decreaseDuration();
+	bool isAlive();
+	void setAlive(bool alive);
+	bool isAllied();
+	void setAllied(bool allied);
 
 protected:
 
+	bool allied;
 	int damage;
 	double speed;
 	double duration;
 	bool collided;
+	bool alive;
 };

@@ -18,11 +18,6 @@ public:
 
 	void static InsertNewDrawableObject(DrawableObject *);
 
-	//void static CheckIfDestroyed();
-
-	void static UpdatePlayerGraph(Player *);
-
-
 
 private:
 

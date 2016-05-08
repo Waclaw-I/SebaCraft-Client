@@ -1,6 +1,7 @@
 #include "Trasher.h"
 #include "TextureHolder.h"
 
+#include <iostream>
 
 Trasher::Trasher()
 {
@@ -25,8 +26,34 @@ Trasher::Trasher()
 	graph.setTexture(TextureHolder::getShipsTextures(1)); // texture of Trasher
 	graph.setOrigin(sizeX / 2, sizeY / 2); // center of our texture
 
-	leftMachineGun.setX(38); // spawn points for this specific ship
-	leftMachineGun.setY(-16); // used to spawn bullets
-	rightMachineGun.setX(38);
-	rightMachineGun.setY(17); // if this class grows, I ll consider making some sort of initialization method
+	leftMachineGun.setLocalPosition(38, -16);
+	rightMachineGun.setLocalPosition(38, 17);
+
+	setTurretsCooldown(0.5, 0.7);
+
+}
+
+
+void Trasher::setTurretsCooldown(double leftTurret, double rightTurret)
+{
+	leftMachineGun.setCooldown(leftTurret);
+	rightMachineGun.setCooldown(rightTurret);
+}
+
+void Trasher::updateTurrets() // we are updating rotation and position of our turrets. It is needed to spawn bullets correctly
+{
+	leftMachineGun.setGlobalPosition(positionX, positionY);
+	leftMachineGun.setRotation(rotation);
+	leftMachineGun.reload();
+	rightMachineGun.setGlobalPosition(positionX, positionY);
+	rightMachineGun.setRotation(rotation);
+	rightMachineGun.reload();
+
+}
+
+
+void Trasher::shoot()
+{
+	leftMachineGun.shoot();
+	rightMachineGun.shoot();
 }

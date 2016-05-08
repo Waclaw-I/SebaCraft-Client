@@ -24,3 +24,6 @@ SmallFighter::SmallFighter()
 	graph.setTexture(TextureHolder::getShipsTextures(0)); // texture of Small Fighter
 	graph.setOrigin(sizeX / 2, sizeY / 2); // center of our texture
 }
+
+void SmallFighter::updateTurrets() {}
+void SmallFighter::shoot() {}

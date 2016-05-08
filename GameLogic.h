@@ -1,6 +1,8 @@
 #pragma once
 #include "vector";
 #include "Player.h";
+#include "ClientData.h"
+#include "Bullet.h"
 
 class GameLogic
 {
@@ -10,6 +12,8 @@ private:
 
 	static bool gameStarted;
 	static bool GameOn;
+
+	static ClientData myClient;
 
 	static std::vector<Player *> playersList;
 public:
@@ -24,5 +28,7 @@ public:
 	static void setResolutionY(int y);
 	static void setGameStarted(bool x);
 	static void setGameOn(bool x);
+	static ClientData & getClientData();
+	static void sendMGunBulletToServer(Bullet * bullet);
 	
 };

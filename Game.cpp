@@ -8,6 +8,7 @@
 #include "PlayerController.h"
 #include "DisplayController.h"
 #include "UsefulMethods.h"
+#include "BulletsController.h"
 
 #include "SmallFighter.h"
 #include "Trasher.h"
@@ -21,6 +22,7 @@ using namespace sf;
 
 Game::Game(ClientData & myClient)
 {
+	GameLogic::getClientData() = myClient;
 	string typedText;
 	int lineLength = 0;
 
@@ -38,7 +40,7 @@ Game::Game(ClientData & myClient)
 	scaleFactorY = static_cast<double>(resolutionY) / static_cast<double>(VideoMode::getDesktopMode().height);
 
 	
-	Player * player = new Player( myClient.getNickname(), *UsefulMethods::getSpaceShipType(myClient.getShipType()), myClient.getID());
+	Player * player = new Player( myClient.getNickname(), UsefulMethods::getSpaceShipType(myClient.getShipType()), myClient.getID());
 
 	thread sendInformations(&ClientData::ClientThreadSendInfo, &myClient, player); // NOWY WATEK DO WYSYLANIA INFORMACJI DO SERWERA
 	sendInformations.detach();
@@ -156,25 +158,35 @@ Game::Game(ClientData & myClient)
 			mainPanel.updatePanel();
 
 
-			playerCamera.setCenter(player->getShip().getPositionX(), player->getShip().getPositionY());
+			playerCamera.setCenter(player->getShip()->getPositionX(), player->getShip()->getPositionY());
 			mainPanel.getGraph().setPosition(mainPanel.getPositionX(), mainPanel.getPositionY());
-			background.setPosition(player->getShip().getPositionX() - resolutionX / 2, player->getShip().getPositionY() - resolutionY / 2);
-			background2.setPosition(player->getShip().getPositionX()*0.75 - resolutionX / 2, player->getShip().getPositionY()*0.75 - resolutionY / 2);
+			background.setPosition(player->getShip()->getPositionX() - resolutionX / 2, player->getShip()->getPositionY() - resolutionY / 2);
+			background2.setPosition(player->getShip()->getPositionX()*0.75 - resolutionX / 2, player->getShip()->getPositionY()*0.75 - resolutionY / 2);
 			gameWindow->setView(playerCamera);
 
 			PlayerController::Moving(player);
-			player->getShip().move();
-			DisplayController::UpdatePlayerGraph(player);
+			player->getShip()->move();
+			player->updateGraphPosition();
+
+			BulletsController::getBulletsController().controllBullets();
+
+			
 
 			gameWindow->clear(Color::Black);
 			gameWindow->draw(background);
 			gameWindow->draw(background2);
-			gameWindow->draw(player->getShip().getGraph());
+			gameWindow->draw(player->getShip()->getGraph());
 			for (int i = 0; i < GameLogic::getPlayersList().size(); i++)
 			{
 				GameLogic::getPlayersList()[i]->updateGraphPosition();
-				gameWindow->draw(GameLogic::getPlayersList()[i]->getShip().getGraph());
+				gameWindow->draw(GameLogic::getPlayersList()[i]->getShip()->getGraph());
 			}
+
+			for (Bullet * x : BulletsController::getBulletsController().getBulletsInGame())
+			{
+				gameWindow->draw(x->getGraph());
+			}
+
 			gameWindow->draw(mainPanel.getGraph());
 			gameWindow->draw(mainPanel.getCoordinatesX());
 			gameWindow->draw(mainPanel.getCoordinatesY());
@@ -186,6 +198,8 @@ Game::Game(ClientData & myClient)
 			{
 				gameWindow->draw(mainPanel.getChatMessages()[i]);
 			}
+
+			
 			
 
 			gameWindow->display();

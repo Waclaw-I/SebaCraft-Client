@@ -18,6 +18,7 @@ int main()
 		string ip;
 		cout << "Podaj IP: ";
 		cin >> ip;
+		if (ip == ".") ip = "127.0.0.1";
 		ClientData client(ip, 33355);
 
 		if (!client.Connect())

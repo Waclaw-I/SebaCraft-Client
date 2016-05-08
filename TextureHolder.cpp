@@ -87,7 +87,8 @@ void TextureHolder::initializeTextureArrays()
 	backgroundTextures[0].loadFromFile("Graphs/Game/gameBackground.png");
 	backgroundTextures[1].loadFromFile("Graphs/Game/gameBackground2.png");
 
-	bulletsTextures[0].loadFromFile("Graphs/Game/Bullets/BasicBullet.png");
+	bulletsTextures[0].loadFromFile("Graphs/Game/Bullets/MGunBulletAlly.png");
+	bulletsTextures[1].loadFromFile("Graphs/Game/Bullets/MGunBulletEnemy.png");
 
 	fonts[0].loadFromFile("Fonts/Starcraft.otf");
 

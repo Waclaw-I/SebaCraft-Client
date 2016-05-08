@@ -11,12 +11,43 @@ std::list <Bullet *> & BulletsController::getBulletsInGame()
 	return this->bulletsInGame;
 }
 
-void BulletsController::addBullet(Bullet *)
-{
+BulletsController::BulletsController() {}
 
+void BulletsController::addBullet(Bullet * bullet)
+{
+	bulletsInGame.push_back(bullet);
 }
 
-void BulletsController::removeBullet(Bullet *)
+void BulletsController::removeBullet(Bullet * bullet)
 {
+	bulletsInGame.remove(bullet);
+}
 
+//bool BulletsController::checkIfGone(Bullet * bullet)
+//{
+//	if (!bullet->isAlive())
+//	{
+//		delete; // returns true if ready to be deleted
+//}
+
+void BulletsController::moveBullets()
+{
+	for (Bullet * x : bulletsInGame)
+	{
+		x->move();
+		x->decreaseDuration(); // by 0.016 <- 1/60 per frame, so duration = 2 equals ~2 seconds
+		x->updateGraphPosition();
+	}
+}
+
+void BulletsController::deleteDeadBullets()
+{
+	bulletsInGame.remove_if([](Bullet * x)->bool {if (!x->isAlive()) { delete x; return true; } return false; });
+	
+}
+
+void BulletsController::controllBullets()
+{
+	moveBullets();
+	deleteDeadBullets();
 }

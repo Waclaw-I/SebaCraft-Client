@@ -1,5 +1,7 @@
 #include "SpaceShip.h"
 
+#include <iostream>
+
 // GETTERS AND SETTERS
 int SpaceShip::getActualHealth() { return this->actualHealth; }
 int SpaceShip::getActualEnergy() { return this->actualEnergy; }
@@ -147,23 +149,30 @@ void SpaceShip::stop()
 		actualSpeedY += acceleration / 2;
 		if (actualSpeedY > -0.001) actualSpeedY = 0;
 	}
+
+	updateTurrets();
 }
 
 void SpaceShip::move()
 {
 	positionX += actualSpeedX;
 	positionY += actualSpeedY;
+	updateTurrets();
 }
 
 void SpaceShip::rotateLeft()
 {
 	if (rotation < 0.1) rotation = 360;
 	rotation -= rotationSpeed;
+	updateTurrets();
 }
 
 void SpaceShip::rotateRight()
 {
 	if (rotation > 359.9) rotation = 0;
 	rotation += rotationSpeed;
+	updateTurrets();
 }
 
+void SpaceShip::updateTurrets() {}
+void SpaceShip::shoot() { }

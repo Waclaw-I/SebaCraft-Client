@@ -11,7 +11,7 @@ private:
 	static Texture shipsTextures[2];
 	static Texture GUItextures[3];
 	static Texture backgroundTextures[2];
-	static Texture bulletsTextures[1];
+	static Texture bulletsTextures[2];
 
 	static Font fonts[1];
 

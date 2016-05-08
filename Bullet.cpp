@@ -1,5 +1,4 @@
 #include "Bullet.h"
-#include "BulletsController.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -11,17 +10,12 @@ Bullet::Bullet(int damage, double speed, double duration)
 	this->damage = damage;
 	this->speed = speed;
 	this->duration = duration;
-
-	BulletsController::getBulletsController().addBullet(this);
+	this->alive = true;
 }
-
-Bullet::~Bullet()
-{
-	BulletsController::getBulletsController().removeBullet(this);
-}
-
 
 Bullet::~Bullet() {}
+
+
 
 void Bullet::move()
 {
@@ -40,14 +34,24 @@ void Bullet::move()
 		positionX -= speed *((270 - rotation) / 90);
 		positionY -= speed *((rotation - 180) / 90);
 	}
-	if ((rotation >= 270) && (rotation < 360))					// -/+ quarter
+	if ((rotation >= 270) && (rotation <= 360))					// -/+ quarter
 	{
 		positionX += speed *((rotation - 270) / 90);
 		positionY -= speed *((360 - rotation) / 90);
 	}
 }
-bool Bullet::isCollided() { return collided; }
+bool Bullet::isCollided() { return this->collided; }
+bool Bullet::isAlive() { return this->alive; }
+void Bullet::setAlive(bool alive) { this->alive = alive; }
+bool Bullet::isAllied() { return this->allied; }
+void Bullet::setAllied(bool allied) { this->allied = allied; }
 
-double Bullet::getDuration() { return duration; }
+double Bullet::getDuration() { return this->duration; }
+double Bullet::getSpeed() { return this->speed; }
+int Bullet::getDamage() { return this->damage; }
 
-void Bullet::decreaseDuration(double amount) { duration -= amount; }
+void Bullet::decreaseDuration()
+{
+	duration -= 0.016;
+	if (duration <= 0) alive = false;
+}

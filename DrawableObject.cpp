@@ -18,6 +18,12 @@ void DrawableObject::setSizeX(double x) { this->sizeX = x; }
 void DrawableObject::setSizeY(double y) { this->sizeY = y; }
 void DrawableObject::setRotation(double rotation) { this->rotation = rotation; }
 
+void DrawableObject::updateGraphPosition()
+{
+	graph.setPosition(positionX, positionY);
+	graph.setRotation(rotation);
+}
+
 // ######################################################################################
 // CONSTRUCTORS
 

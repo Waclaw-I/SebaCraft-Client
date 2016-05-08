@@ -16,7 +16,8 @@ enum Packet
 	pInitialize,
 	pNewPlayer,
 	pRemovePlayer,
-	pPosition
+	pPosition,
+	pBullet
 };
 
 class ClientData
@@ -49,6 +50,7 @@ private:
 	
 public:
 
+	ClientData();
 	ClientData(string ip, int port);
 	bool Connect();
 
@@ -59,6 +61,7 @@ public:
 	bool sendInitialization(string & message); // information about nickname, choosen ship etc
 	bool sendLeftAlert(string & message);
 	bool sendPosition(string & message);
+	bool sendBullet(string & message);
 	bool closeConnection();
 
 	string getReceivedChatMessage();

@@ -2,6 +2,7 @@
 #include "GameLogic.h"
 #include "Player.h"
 #include "UsefulMethods.h"
+#include "MGunBullet.h"
 
 #include <Windows.h>
 #include <thread>
@@ -20,7 +21,7 @@ void ClientData::setNickname(string nickname) { this->nickname = nickname; }
 void ClientData::setShipType(int shipType) { this->shipType = shipType; }
 void ClientData::setID(int ID) { this->ID = ID; }
 
-
+ClientData::ClientData() {}
 ClientData::ClientData(string ip, int port)
 {
 	WSAData wsaData;
@@ -71,7 +72,7 @@ bool ClientData::processPacket(Packet packetType)
 			string nick = data.substr(1, data.size() - (data.size() - position + 1));
 			int id = atoi(data.substr(position, data.size()).c_str());
 			int shipType = atoi(data.substr(0, 1).c_str());
-			GameLogic::getPlayersList().push_back(new Player(nick, *UsefulMethods::getSpaceShipType(shipType), id));
+			GameLogic::getPlayersList().push_back(new Player(nick, UsefulMethods::getSpaceShipType(shipType), id));
 			for (int i = 0; i < GameLogic::getPlayersList().size(); i++)
 			{
 				cout << "Gracz: " << GameLogic::getPlayersList()[i]->getName() << " ID: " << GameLogic::getPlayersList()[i]->getID() << endl;
@@ -125,11 +126,43 @@ bool ClientData::processPacket(Packet packetType)
 			{
 				if (GameLogic::getPlayersList()[i]->getID() == ID)
 				{
-					GameLogic::getPlayersList()[i]->getShip().setPositionX(positionX);
-					GameLogic::getPlayersList()[i]->getShip().setPositionY(positionY);
-					GameLogic::getPlayersList()[i]->getShip().setRotation(rotation);
+					GameLogic::getPlayersList()[i]->getShip()->setPositionX(positionX);
+					GameLogic::getPlayersList()[i]->getShip()->setPositionY(positionY);
+					GameLogic::getPlayersList()[i]->getShip()->setRotation(rotation);
 				}
 			}
+			break;
+		}
+
+		case pBullet:
+		{
+			string bulletInformation;
+			if (!getMessage(bulletInformation)) return false;
+
+			int tParserPos = bulletInformation.find("T");
+			int xParserPos = bulletInformation.find("X");
+			int yParserPos = bulletInformation.find("Y");
+			int rParserPos = bulletInformation.find("R");
+			int speedParserPos = bulletInformation.find("S");
+			int durationParserPos = bulletInformation.find("D");
+			int damageParserPos = bulletInformation.find("A");
+
+			int type, positionX, positionY, damage;
+			double rotation, duration, speed;
+
+			type = atoi(bulletInformation.substr(0, tParserPos).c_str());
+			positionX = atoi(bulletInformation.substr(tParserPos + 1, xParserPos - tParserPos - 1).c_str());
+			positionY = atoi(bulletInformation.substr(xParserPos + 1, yParserPos - xParserPos - 1).c_str());
+			rotation = atof(bulletInformation.substr(yParserPos + 1, rParserPos - yParserPos - 1).c_str());
+			speed = atof(bulletInformation.substr(rParserPos + 1, speedParserPos - rParserPos - 1).c_str());
+			duration = atof(bulletInformation.substr(speedParserPos + 1, durationParserPos - speedParserPos - 1).c_str());
+			damage = atoi(bulletInformation.substr(durationParserPos + 1, damageParserPos - durationParserPos - 1).c_str());
+
+			if (type == 1)
+			{
+				MGunBullet * bullet = new MGunBullet(positionX, positionY, rotation, speed, duration, damage);
+			}
+
 			break;
 		}
 
@@ -161,7 +194,7 @@ void ClientData::ClientThreadSendInfo(Player * player)
 {
 	while (GameLogic::getGameOn())
 	{
-		string position = to_string(player->getShip().getPositionX()) + "X" + to_string(player->getShip().getPositionY()) + "Y" + to_string(player->getShip().getRotation()) + "R";
+		string position = to_string(player->getShip()->getPositionX()) + "X" + to_string(player->getShip()->getPositionY()) + "Y" + to_string(player->getShip()->getRotation()) + "R";
 		if (!sendPosition(position)) std::cout << "Failed to send position packet to the server" << std::endl;
 		Sleep(16);
 	}
@@ -289,6 +322,29 @@ bool ClientData::sendLeftAlert(string & message)
 bool ClientData::sendPosition(string & message)
 {
 	if (!sendPacketType(pPosition))
+	{
+		cout << "Failed to send Position packet" << endl;
+		return false;
+	}
+	int bufferLength = message.size();
+	if (!sendMessageSize(bufferLength))
+	{
+		cout << "Failed to message size" << endl;
+		return false;
+	}
+
+	int check = send(Connection, message.c_str(), bufferLength, NULL);
+	if (check == SOCKET_ERROR)
+	{
+		cout << "Failed to send message" << endl;
+		return false;
+	}
+	return true; // Message sent successfuly
+}
+
+bool ClientData::sendBullet(string & message)
+{
+	if (!sendPacketType(pBullet))
 	{
 		cout << "Failed to send Position packet" << endl;
 		return false;
